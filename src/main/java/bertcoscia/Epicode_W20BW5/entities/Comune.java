@@ -12,19 +12,18 @@ import java.util.UUID;
 @Setter
 @ToString
 public class Comune {
-    /*@Id
+    @Id
     @GeneratedValue
     @Setter(AccessLevel.NONE)
     @Column(name = "id")
-    private UUID idComune;*/
+    private UUID idComune;
     @Column(name = "progressivo_provincia")
     private String progressivoProvincia;
     @Column(name = "progressivo_comune")
     private String progressivoComune;
-    @Id
     private String nome;
     @ManyToOne
-    @JoinColumn(name = "provincia")
+    @JoinColumn(name = "id_provincia")
     private Provincia provincia;
 
     public Comune(String progressivoProvincia, String progressivoComune, String nome, Provincia provincia) {

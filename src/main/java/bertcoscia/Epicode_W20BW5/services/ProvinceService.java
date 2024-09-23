@@ -1,6 +1,7 @@
 package bertcoscia.Epicode_W20BW5.services;
 
 import bertcoscia.Epicode_W20BW5.entities.Provincia;
+import bertcoscia.Epicode_W20BW5.exceptions.NotFoundException;
 import bertcoscia.Epicode_W20BW5.repositories.ProvincieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,10 @@ import java.util.List;
 public class ProvinceService {
     @Autowired
     private ProvincieRepository repository;
+
+    public Provincia findByName(String provincia) {
+        return this.repository.findByNome(provincia).orElseThrow(() -> new NotFoundException("Non è stato possibile trovare la provincia con nome " + provincia));
+    }
 
     public void importData(String csvFilePath) {
         List<Provincia> provinceList = new ArrayList<>();

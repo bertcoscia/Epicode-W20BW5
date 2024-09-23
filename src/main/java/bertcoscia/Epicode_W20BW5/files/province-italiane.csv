@@ -21,7 +21,6 @@ BR;Brindisi;Puglia
 CA;Cagliari;Sardegna
 CL;Caltanissetta;Sicilia
 CB;Campobasso;Molise
-CI;Carbonia Iglesias;Sardegna
 CE;Caserta;Campania
 CT;Catania;Sicilia
 CZ;Catanzaro;Calabria
@@ -54,7 +53,6 @@ MC;Macerata;Marche
 MN;Mantova;Lombardia
 MS;Massa-Carrara;Toscana
 MT;Matera;Basilicata
-VS;Medio Campidano;Sardegna
 ME;Messina;Sicilia
 MI;Milano;Lombardia
 MO;Modena;Emilia Romagna
@@ -92,6 +90,7 @@ SV;Savona;Liguria
 SI;Siena;Toscana
 SR;Siracusa;Sicilia
 SO;Sondrio;Lombardia
+SU;Sud-Sardegna;Sardegna
 TA;Taranto;Puglia
 TE;Teramo;Abruzzo
 TR;Terni;Umbria
