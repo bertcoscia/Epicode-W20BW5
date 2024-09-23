@@ -2,6 +2,7 @@ package bertcoscia.Epicode_W20BW5.services;
 
 import bertcoscia.Epicode_W20BW5.entities.Comune;
 import bertcoscia.Epicode_W20BW5.entities.Provincia;
+import bertcoscia.Epicode_W20BW5.exceptions.NotFoundException;
 import bertcoscia.Epicode_W20BW5.repositories.ComuniRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,10 @@ public class ComuniService {
 
     @Autowired
     ProvinceService provinceService;
+
+    public Comune findByNome(String nome) {
+        return this.repository.findByNome(nome).orElseThrow(() -> new NotFoundException("Non è stato possibile trovare il comune " + nome));
+    }
 
     public void importData(String csvFilePath) {
         List<Comune> comuniList = new ArrayList<>();
