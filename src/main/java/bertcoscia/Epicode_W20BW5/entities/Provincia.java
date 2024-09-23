@@ -17,10 +17,12 @@ public class Provincia {
     @Setter(AccessLevel.NONE)
     @Column(name = "id")
     private UUID idProvincia;
+    private String nome;
     private String sigla;
     private String regione;
 
-    public Provincia(String sigla, String regione) {
+    public Provincia(String nome, String sigla, String regione) {
+        this.nome = nome;
         this.sigla = sigla;
         this.regione = regione;
     }
