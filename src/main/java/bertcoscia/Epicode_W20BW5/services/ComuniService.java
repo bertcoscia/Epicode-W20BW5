@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ComuniService {
@@ -22,6 +23,10 @@ public class ComuniService {
 
     public Comune findByNome(String nome) {
         return this.repository.findByNomeIgnoreCase(nome).orElseThrow(() -> new NotFoundException("Non è stato possibile trovare il comune " + nome));
+    }
+
+    public Comune findById(UUID id) {
+        return this.repository.findById(id).orElseThrow(()-> new NotFoundException(id));
     }
 
     public void importData(String csvFilePath) {

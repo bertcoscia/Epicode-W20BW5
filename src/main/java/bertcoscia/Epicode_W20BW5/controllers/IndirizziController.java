@@ -6,6 +6,7 @@ import bertcoscia.Epicode_W20BW5.payloads.NewEntityRespDTO;
 import bertcoscia.Epicode_W20BW5.payloads.NewIndirizziDTO;
 import bertcoscia.Epicode_W20BW5.services.IndirizziService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -13,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,7 +37,33 @@ public class IndirizziController {
     }
 
     @GetMapping
-    public List<Indirizzo> findAll() {
-        return this.service.findAll();
+    public Page<Indirizzo> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "via") String sortBy) {
+        return this.service.findAll(page, size, sortBy);
+    }
+
+    @GetMapping("/{idIndirizzo}")
+    public Indirizzo findById(@PathVariable UUID idIndirizzo) {
+        return this.service.findById(idIndirizzo);
+    }
+
+    @PutMapping("/{idIndirizzo}")
+    public Indirizzo findByIdAndUpdate(@PathVariable UUID idIndirizzo, @RequestBody @Validated Indirizzo body, BindingResult validationResult) {
+        if (validationResult.hasErrors()) {
+            String messages = validationResult.getAllErrors().stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .collect(Collectors.joining(". "));
+            throw new BadRequestException(messages);
+        } else {
+            return this.service.findByIdAndUpdate(idIndirizzo, body);
+        }
+    }
+
+    @DeleteMapping("/{idIndirizzo}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void findByIdAndDelete(@PathVariable UUID idIndirizzo) {
+        this.service.findByIdAndDelete(idIndirizzo);
     }
 }
