@@ -9,6 +9,8 @@ import bertcoscia.Epicode_W20BW5.repositories.IndirizziRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class IndirizziService {
     @Autowired
@@ -17,10 +19,14 @@ public class IndirizziService {
     @Autowired
     ComuniService comuniService;
 
-    public NewEntityRespDTO save(NewIndirizziDTO body) {
+    public Indirizzo save(NewIndirizziDTO body) {
         if (this.repository.existsByViaAndCivicoAndLocalita(body.via(), body.civico(), body.localita())) throw new BadRequestException("Esiste già un indirizzo registrato a " + body.via() + " " + body.civico() + " presso la località " + body.localita());
         Comune comuneFound = this.comuniService.findByNome(body.comune());
         Indirizzo newIndirizzo = new Indirizzo(body.via(), body.civico(), body.localita(), comuneFound);
-        return new NewEntityRespDTO(this.repository.save(newIndirizzo).getIdIndirizzo());
+        return this.repository.save(newIndirizzo);
+    }
+
+    public List<Indirizzo> findAll() {
+        return this.repository.findAll();
     }
 }

@@ -1,5 +1,6 @@
 package bertcoscia.Epicode_W20BW5.controllers;
 
+import bertcoscia.Epicode_W20BW5.entities.Indirizzo;
 import bertcoscia.Epicode_W20BW5.exceptions.BadRequestException;
 import bertcoscia.Epicode_W20BW5.payloads.NewEntityRespDTO;
 import bertcoscia.Epicode_W20BW5.payloads.NewIndirizziDTO;
@@ -11,6 +12,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -28,7 +30,12 @@ public class IndirizziController {
                     .collect(Collectors.joining(". "));
             throw new BadRequestException(messages);
         } else {
-            return new NewEntityRespDTO(this.service.save(body).id());
+            return new NewEntityRespDTO(this.service.save(body).getIdIndirizzo());
         }
+    }
+
+    @GetMapping
+    public List<Indirizzo> findAll() {
+        return this.service.findAll();
     }
 }

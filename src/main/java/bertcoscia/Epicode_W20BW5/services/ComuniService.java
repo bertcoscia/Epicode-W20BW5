@@ -21,7 +21,7 @@ public class ComuniService {
     ProvinceService provinceService;
 
     public Comune findByNome(String nome) {
-        return this.repository.findByNome(nome).orElseThrow(() -> new NotFoundException("Non è stato possibile trovare il comune " + nome));
+        return this.repository.findByNomeIgnoreCase(nome).orElseThrow(() -> new NotFoundException("Non è stato possibile trovare il comune " + nome));
     }
 
     public void importData(String csvFilePath) {
