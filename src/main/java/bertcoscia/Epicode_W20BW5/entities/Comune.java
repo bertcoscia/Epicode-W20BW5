@@ -1,5 +1,6 @@
 package bertcoscia.Epicode_W20BW5.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
+@JsonIgnoreProperties({"progressivoProvincia", "progressivoComune"})
 public class Comune {
     @Id
     @GeneratedValue
