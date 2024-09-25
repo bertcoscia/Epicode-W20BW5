@@ -3,6 +3,7 @@ package bertcoscia.Epicode_W20BW5.controllers;
 import bertcoscia.Epicode_W20BW5.entities.User;
 import bertcoscia.Epicode_W20BW5.exceptions.BadRequestException;
 import bertcoscia.Epicode_W20BW5.payloads.UserDTO;
+import bertcoscia.Epicode_W20BW5.payloads.UserUpRuoloDTO;
 import bertcoscia.Epicode_W20BW5.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -90,7 +91,7 @@ public class UsersController {
 
     @PutMapping("/{userId}/ruoli")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public User updateRuolo(@PathVariable UUID userId, @RequestBody @Validated String nomeRuolo, BindingResult validationResult) {
+    public User updateRuolo(@PathVariable UUID userId, @RequestBody @Validated UserUpRuoloDTO nomeRuolo, BindingResult validationResult) {
         if (validationResult.hasErrors()) {
             String messages = validationResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)

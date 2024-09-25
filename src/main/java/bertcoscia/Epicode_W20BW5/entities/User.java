@@ -31,7 +31,7 @@ public class User implements UserDetails {
     private String nome;
     private String cognome;
     private String avatarUrl;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_ruolo", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "ruolo_id"))
     private Set<Ruolo> ruoli = new HashSet<>();
 

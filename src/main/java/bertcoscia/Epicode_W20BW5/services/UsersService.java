@@ -5,6 +5,7 @@ import bertcoscia.Epicode_W20BW5.entities.User;
 import bertcoscia.Epicode_W20BW5.exceptions.BadRequestException;
 import bertcoscia.Epicode_W20BW5.exceptions.NotFoundException;
 import bertcoscia.Epicode_W20BW5.payloads.UserDTO;
+import bertcoscia.Epicode_W20BW5.payloads.UserUpRuoloDTO;
 import bertcoscia.Epicode_W20BW5.repositories.RuoloRepository;
 import bertcoscia.Epicode_W20BW5.repositories.UsersRepository;
 import com.cloudinary.Cloudinary;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -88,9 +90,15 @@ public class UsersService {
         return dipendente;
     }
 
-    public User updateRuolo(UUID userId, String nomeRuolo) {
+    public User updateRuolo(UUID userId, UserUpRuoloDTO nomeRuolo) {
         User user = findById(userId);
-        Ruolo ruolo = ruoloRepository.findByNome(nomeRuolo.toUpperCase());
+        Ruolo ruolo = ruoloRepository.findByNome(nomeRuolo.nomeRuolo().toUpperCase());
+        if (ruolo == null) {
+            throw new BadRequestException("Ruolo non trovato: " + nomeRuolo);
+        }
+        if (user.getRuoli() == null) {
+            user.setRuoli(new HashSet<>());
+        }
         user.getRuoli().add(ruolo);
         return usersRepository.save(user);
     }

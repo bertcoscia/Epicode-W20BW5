@@ -1,5 +1,6 @@
 package bertcoscia.Epicode_W20BW5.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,7 @@ public class Ruolo {
     @GeneratedValue
     private UUID id;
     private String nome;
+    @JsonIgnore
     @ManyToMany(mappedBy = "ruoli")
     private Set<User> users = new HashSet<>();
 
