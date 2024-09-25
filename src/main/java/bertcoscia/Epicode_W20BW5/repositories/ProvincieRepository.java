@@ -14,5 +14,7 @@ public interface ProvincieRepository extends JpaRepository<Provincia, UUID> {
 
     Optional<Provincia> findById(UUID id);
 
-    boolean existsByNomeAndSigla(String nome, String sigla);
+    boolean existsByNome(String nome);
+
+    boolean existsBySigla(String sigla);
 }

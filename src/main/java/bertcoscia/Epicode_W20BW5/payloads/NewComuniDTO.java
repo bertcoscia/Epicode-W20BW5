@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 public record NewComuniDTO(
         @NotEmpty(message = "Progressivo provincia obbligatorio")
         String progressivoProvincia,
-        @NotEmpty(message = "Progressivo comune obbligatorio")
+        //@NotEmpty(message = "Progressivo comune obbligatorio")
         String progressivoComune,
         @NotEmpty(message = "Nome comune obbligatorio")
         String nome,

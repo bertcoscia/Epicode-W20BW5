@@ -30,7 +30,8 @@ public class ProvinceService {
     }
 
     public Provincia save(NewProvinceDTO body) {
-        if (this.repository.existsByNomeAndSigla(body.nome(), body.sigla())) throw new BadRequestException("Esista già una provincia con nome " + body.nome() + " e sigla " + body.sigla());
+        if (this.repository.existsByNome(body.nome())) throw new BadRequestException("Esiste già una provincia chiamata " + body.nome());if (this.repository.existsByNome(body.nome())) throw new BadRequestException("Esiste già una provincia chiamata " + body.nome());
+        if (this.repository.existsBySigla(body.sigla())) throw new BadRequestException("Esiste già una provincia chiamata " + body.nome());if (this.repository.existsByNome(body.nome())) throw new BadRequestException("Esiste già una provincia con sigla " + body.sigla());
         return this.repository.save(new Provincia(body.nome(), body.sigla(), body.regione()));
     }
 
@@ -46,7 +47,8 @@ public class ProvinceService {
 
     public Provincia findByIdAndUpdate(UUID id, Provincia body) {
         Provincia found = this.findById(id);
-        if (this.repository.existsByNomeAndSigla(body.getNome(), body.getSigla()) && !found.getIdProvincia().equals(body.getIdProvincia())) throw new BadRequestException("Esista già una provincia con nome " + body.getNome() + " e sigla " + body.getSigla());
+        if (this.repository.existsByNome(body.getNome()) && !found.getIdProvincia().equals(body.getIdProvincia())) throw new BadRequestException("Esista già una provincia chiamata " + body.getNome());
+        if (this.repository.existsBySigla(body.getSigla()) && !found.getIdProvincia().equals(body.getIdProvincia())) throw new BadRequestException("Esista già una provincia con sigla " + body.getSigla());
         found.setNome(body.getNome());
         found.setSigla(body.getSigla());
         found.setRegione(body.getRegione());

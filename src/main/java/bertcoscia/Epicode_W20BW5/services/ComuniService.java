@@ -39,7 +39,13 @@ public class ComuniService {
     public Comune save(NewComuniDTO body) {
         Provincia provinciaFound = this.provinceService.findByNomeIgnoreCase(body.nomeProvincia());
         if (this.repository.existsByNomeAndProvinciaNome(body.nome(), provinciaFound.getNome())) throw new BadRequestException("Esiste già un comune chiamato " + body.nome() + " nella provincia di " + provinciaFound.getNome());
-        return this.repository.save(new Comune(body.progressivoProvincia(), body.progressivoComune(), body.nome(), provinciaFound));
+        if (this.repository.existsByProgressivoProvinciaAndProgressivoComune(body.progressivoProvincia(), body.progressivoComune())) throw new BadRequestException("Esiste già un comune con codice progressivo " + body.progressivoComune() + " nella provincia di " + provinciaFound.getNome());
+        if (body.progressivoComune() == null) {
+            int newProgressivoComune = Integer.parseInt(this.repository.findMaxProgressivoProvincia(body.progressivoProvincia())) + 1;
+            return this.repository.save(new Comune(body.progressivoProvincia(), String.valueOf(newProgressivoComune), body.nome(), provinciaFound));
+        } else {
+            return this.repository.save(new Comune(body.progressivoProvincia(), body.progressivoComune(), body.nome(), provinciaFound));
+        }
     }
 
     public Page<Comune> findAll(int page, int size, String sortBy) {

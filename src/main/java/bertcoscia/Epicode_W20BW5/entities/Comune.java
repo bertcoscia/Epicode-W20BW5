@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-@JsonIgnoreProperties({"progressivoProvincia", "progressivoComune"})
+//@JsonIgnoreProperties({"progressivoProvincia", "progressivoComune"})
 public class Comune {
     @Id
     @GeneratedValue
