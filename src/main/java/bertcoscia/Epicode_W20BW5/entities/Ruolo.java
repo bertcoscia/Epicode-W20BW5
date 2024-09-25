@@ -1,10 +1,7 @@
 package bertcoscia.Epicode_W20BW5.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import lombok.Getter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,12 +21,8 @@ public class Ruolo {
     private String nome;
     @ManyToMany(mappedBy = "ruoli")
     private Set<User> users = new HashSet<>();
-    /*
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "ruoli_permessi",
-            joinColumns = @JoinColumn(name = "ruolo_id"),
-            inverseJoinColumns = @JoinColumn(name = "permesso_id")
-    )*/
-    //private List<Permesso> permessi = new ArrayList<>();
+
+    public Ruolo(String nome) {
+        this.nome = nome;
+    }
 }

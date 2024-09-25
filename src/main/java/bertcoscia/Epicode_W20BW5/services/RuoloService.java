@@ -1,6 +1,8 @@
 package bertcoscia.Epicode_W20BW5.services;
 
 import bertcoscia.Epicode_W20BW5.entities.Ruolo;
+import bertcoscia.Epicode_W20BW5.exceptions.BadRequestException;
+import bertcoscia.Epicode_W20BW5.payloads.RuoloDTO;
 import bertcoscia.Epicode_W20BW5.repositories.RuoloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,11 @@ public class RuoloService {
         return ruoloRepository.findAll();
     }
 
-    public Ruolo save(Ruolo ruolo) {
+    public Ruolo save(RuoloDTO body) {
+        if (body == null) {
+            throw new BadRequestException("Devi inserire il body del Ruolo!");
+        }
+        Ruolo ruolo = new Ruolo(body.nome());
         return ruoloRepository.save(ruolo);
     }
 

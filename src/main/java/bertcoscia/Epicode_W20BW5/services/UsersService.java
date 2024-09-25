@@ -4,7 +4,7 @@ import bertcoscia.Epicode_W20BW5.entities.User;
 import bertcoscia.Epicode_W20BW5.exceptions.BadRequestException;
 import bertcoscia.Epicode_W20BW5.exceptions.NotFoundException;
 import bertcoscia.Epicode_W20BW5.payloads.UserDTO;
-import bertcoscia.Epicode_W20BW5.repository.UsersRepository;
+import bertcoscia.Epicode_W20BW5.repositories.UsersRepository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;

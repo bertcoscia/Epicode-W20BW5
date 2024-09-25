@@ -1,9 +1,11 @@
 package bertcoscia.Epicode_W20BW5.controllers;
 
 import bertcoscia.Epicode_W20BW5.entities.Ruolo;
+import bertcoscia.Epicode_W20BW5.payloads.RuoloDTO;
 import bertcoscia.Epicode_W20BW5.services.RuoloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,12 +17,13 @@ public class RuoloController {
     private RuoloService ruoloService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<Ruolo> getAllRuoli() {
         return ruoloService.findAll();
     }
 
     @PostMapping
-    public Ruolo createRuolo(@RequestBody Ruolo ruolo) {
+    public Ruolo createRuolo(@RequestBody RuoloDTO ruolo) {
         return ruoloService.save(ruolo);
     }
 

@@ -77,12 +77,13 @@ public class UsersController {
 
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasAuthority('ADMIN')") // Solo gli admin possono cancellare altri utenti
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void findByIdAndDelete(@PathVariable UUID userId) {
         this.usersService.findByIdAndDelete(userId);
     }
 
     @PutMapping("/{userId}/avatar")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public User uploadAvatar(@PathVariable UUID userId, @RequestParam("avatar") MultipartFile image) throws IOException {
         return this.usersService.uploadImage(userId, image);
     }
