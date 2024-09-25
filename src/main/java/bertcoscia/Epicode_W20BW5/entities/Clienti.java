@@ -41,12 +41,12 @@ public class Clienti {
     private String sedeOperativa;
 
     @OneToMany
-    private List<Indirizzi> indirizzi;
+    private List<Indirizzo> indirizzi;
 
     //Costruttore
 
     public Clienti(String cognome, LocalDate dataInserimento, LocalDate dataUltimoContatto, String email, String emailContatto,
-                   double fatturatoAnnuale, List<Indirizzi> indirizzi, String logoAziendale, String nomeContatto, String nomeSocieta, String partitaIva, String pec, String sedeLegale, String sedeOperativa, String telefono, String telefonoContatto, TipoCliente tipoCliente) {
+                   double fatturatoAnnuale, List<Indirizzo> indirizzi, String logoAziendale, String nomeContatto, String nomeSocieta, String partitaIva, String pec, String sedeLegale, String sedeOperativa, String telefono, String telefonoContatto, TipoCliente tipoCliente) {
         this.cognome = cognome;
         this.dataInserimento = dataInserimento;
         this.dataUltimoContatto = dataUltimoContatto;

@@ -1,7 +1,7 @@
 package bertcoscia.Epicode_W20BW5.payloads;
 
 
-import bertcoscia.Epicode_W20BW5.entities.Indirizzi;
+import bertcoscia.Epicode_W20BW5.entities.Indirizzo;
 import bertcoscia.Epicode_W20BW5.enums.TipoCliente;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -63,6 +63,6 @@ public record NewClienteDTO(
         @NotEmpty(message = "Il telefono del contatto non può essere vuoto")
         String sedeOperativa,
 
-        List<Indirizzi> indirizzi
+        List<Indirizzo> indirizzi
 ) {
 }
