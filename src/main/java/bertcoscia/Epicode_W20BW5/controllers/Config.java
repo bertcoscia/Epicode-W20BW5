@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Config {
 
-    // Iniettare i valori dal file di configurazione
     @Value("${server.port}")
     private String serverPort;
 
