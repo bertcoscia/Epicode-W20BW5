@@ -1,4 +1,4 @@
-package bertcoscia.Epicode_W20BW5.repository;
+package bertcoscia.Epicode_W20BW5.repositories;
 
 import bertcoscia.Epicode_W20BW5.entities.Fattura;
 import org.springframework.data.jpa.repository.JpaRepository;
