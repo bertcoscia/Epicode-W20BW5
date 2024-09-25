@@ -88,9 +88,16 @@ public class UsersController {
         return this.usersService.uploadImage(userId, image);
     }
 
-    @PutMapping("/{userId}")
+    @PutMapping("/{userId}/ruoli")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public User updateRuolo(@PathVariable UUID userId, @RequestBody @Validated String nomeRuolo) {
-        return this.usersService.updateRuolo(userId, nomeRuolo);
+    public User updateRuolo(@PathVariable UUID userId, @RequestBody @Validated String nomeRuolo, BindingResult validationResult) {
+        if (validationResult.hasErrors()) {
+            String messages = validationResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.joining(". "));
+            throw new BadRequestException("Ci sono stati errori nel payload. " + messages);
+        } else {
+            return this.usersService.updateRuolo(userId, nomeRuolo);
+        }
     }
 }
