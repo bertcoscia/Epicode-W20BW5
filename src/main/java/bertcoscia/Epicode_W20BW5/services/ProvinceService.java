@@ -1,6 +1,5 @@
 package bertcoscia.Epicode_W20BW5.services;
 
-import bertcoscia.Epicode_W20BW5.entities.Indirizzo;
 import bertcoscia.Epicode_W20BW5.entities.Provincia;
 import bertcoscia.Epicode_W20BW5.exceptions.BadRequestException;
 import bertcoscia.Epicode_W20BW5.exceptions.NotFoundException;
@@ -26,8 +25,8 @@ public class ProvinceService {
     @Autowired
     private ProvincieRepository repository;
 
-    public Provincia findByName(String provincia) {
-        return this.repository.findByNome(provincia).orElseThrow(() -> new NotFoundException("Non è stato possibile trovare la provincia con nome " + provincia));
+    public Provincia findByNomeIgnoreCase(String provincia) {
+        return this.repository.findByNomeIgnoreCase(provincia).orElseThrow(() -> new NotFoundException("Non è stato possibile trovare la provincia con nome " + provincia));
     }
 
     public Provincia save(NewProvinceDTO body) {

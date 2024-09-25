@@ -14,4 +14,6 @@ public interface ComuniRepository extends JpaRepository<Comune, UUID> {
     Optional<Comune> findByNomeIgnoreCase(String nome);
 
     List<Comune> findByProgressivoComune(String progressivoComune);
+
+    boolean existsByNomeAndProvinciaNome(String nome, String provinciaNome);
 }
