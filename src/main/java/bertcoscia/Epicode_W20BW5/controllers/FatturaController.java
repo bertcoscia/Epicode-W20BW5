@@ -6,7 +6,9 @@ import bertcoscia.Epicode_W20BW5.payloads.FatturaDTO;
 import bertcoscia.Epicode_W20BW5.payloads.NewEntityRespDTO;
 import bertcoscia.Epicode_W20BW5.services.FatturaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +30,13 @@ public class FatturaController {
         return fatturaService.findAll(page, size, sortBy);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{fatturaId}")
     public Fattura findById(@PathVariable UUID fatturaId) {
         return this.fatturaService.findById(fatturaId);
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public NewEntityRespDTO save(@RequestBody @Validated FatturaDTO body, BindingResult validationResult) {
         if (validationResult.hasErrors()) {
             String messages = validationResult.getAllErrors().stream()
@@ -46,8 +49,22 @@ public class FatturaController {
 
     }
 
-    @DeleteMapping("/{id}")
-    public void findByIdAndDelete(@PathVariable UUID id) {
-        fatturaService.findByIdAndDelete(id);
+    @DeleteMapping("/{fatturaId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void findByIdAndDelete(@PathVariable UUID fatturaId) {
+        fatturaService.findByIdAndDelete(fatturaId);
+    }
+
+    @PutMapping("/{fatturaId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Fattura findByIdAndUpdate(@PathVariable UUID fatturaId, @RequestBody @Validated FatturaDTO body, BindingResult validationResult) {
+        if (validationResult.hasErrors()) {
+            String messages = validationResult.getAllErrors().stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .collect(Collectors.joining(". "));
+            throw new BadRequestException("Ci sono stati errori nel payload. " + messages);
+        } else {
+            return this.fatturaService.findByIdAndUpdate(fatturaId, body);
+        }
     }
 }

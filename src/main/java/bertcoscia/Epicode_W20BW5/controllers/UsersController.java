@@ -64,7 +64,7 @@ public class UsersController {
     }
 
     @PutMapping("/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')") // Solo gli admin possono modificare gli utenti
+    @PreAuthorize("hasAuthority('ADMIN')")
     public User findByIdAndUpdate(@PathVariable UUID userId, @RequestBody @Validated UserDTO body, BindingResult validationResult) {
         if (validationResult.hasErrors()) {
             String messages = validationResult.getAllErrors().stream()

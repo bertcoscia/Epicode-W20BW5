@@ -23,7 +23,6 @@ public class Fattura {
     private double importo;
 
     @Column(name = "numero_fattura", unique = true)
-    @GeneratedValue
     private Long numeroFattura;
 
     @ManyToOne

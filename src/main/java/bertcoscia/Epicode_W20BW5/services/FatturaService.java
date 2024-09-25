@@ -67,4 +67,33 @@ public class FatturaService {
         Fattura found = findById(fatturaId);
         this.fatturaRepository.delete(found);
     }
+
+    public Fattura findByIdAndUpdate(UUID fatturaId, FatturaDTO updateBody) {
+        Fattura found = findById(fatturaId);
+        LocalDate data;
+        try {
+            data = LocalDate.parse(updateBody.data());
+        } catch (DateTimeParseException e) {
+            throw new BadRequestException("Formato della data non valido: " + updateBody.data() + ", il formato deve essere yyyy-mm-dd!");
+        }
+        UUID clienteId;
+        try {
+            clienteId = UUID.fromString(updateBody.clienteId());
+        } catch (IllegalArgumentException e) {
+            throw new BadRequestException("Id dello user non valido: " + updateBody.clienteId() + ". Deve essere un UUID valido.");
+        }
+        StatoFattura statoFattura;
+        try {
+            statoFattura = statoFatturaRepository.findByNomeStato(updateBody.nomeStatoFattura());
+        } catch (IllegalArgumentException e) {
+            throw new BadRequestException("Il nome dello stato fattura non è valido: " + updateBody.nomeStatoFattura());
+        }
+        Cliente cliente = clientiService.findClienteById(clienteId);
+        found.setCliente(cliente);
+        found.setData(data);
+        found.setStatoFattura(statoFattura);
+        found.setImporto(updateBody.importo());
+        return fatturaRepository.save(found);
+
+    }
 }
