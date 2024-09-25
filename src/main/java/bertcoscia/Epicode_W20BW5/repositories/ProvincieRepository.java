@@ -11,4 +11,8 @@ import java.util.UUID;
 public interface ProvincieRepository extends JpaRepository<Provincia, UUID> {
 
     Optional<Provincia> findByNome(String name);
+
+    Optional<Provincia> findById(UUID id);
+
+    boolean existsByNomeAndSigla(String nome, String sigla);
 }
