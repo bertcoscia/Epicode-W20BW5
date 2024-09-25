@@ -2,13 +2,14 @@ package bertcoscia.Epicode_W20BW5.services;
 
 import bertcoscia.Epicode_W20BW5.entities.Ruolo;
 import bertcoscia.Epicode_W20BW5.exceptions.BadRequestException;
+import bertcoscia.Epicode_W20BW5.exceptions.NotFoundException;
 import bertcoscia.Epicode_W20BW5.payloads.RuoloDTO;
 import bertcoscia.Epicode_W20BW5.repositories.RuoloRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class RuoloService {
@@ -23,15 +24,16 @@ public class RuoloService {
         if (body == null) {
             throw new BadRequestException("Devi inserire il body del Ruolo!");
         }
-        Ruolo ruolo = new Ruolo(body.nome());
+        Ruolo ruolo = new Ruolo(body.nome().toUpperCase());
         return ruoloRepository.save(ruolo);
     }
 
-    public Optional<Ruolo> findById(Long id) {
-        return ruoloRepository.findById(id);
+    public Ruolo findById(UUID ruoloId) {
+        return ruoloRepository.findById(ruoloId).orElseThrow(() -> new NotFoundException(ruoloId));
     }
 
-    public void delete(Long id) {
-        ruoloRepository.deleteById(id);
+    public void delete(UUID ruoloId) {
+        Ruolo ruolo = findById(ruoloId);
+        ruoloRepository.delete(ruolo);
     }
 }

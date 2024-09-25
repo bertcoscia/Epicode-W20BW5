@@ -4,14 +4,16 @@ import bertcoscia.Epicode_W20BW5.entities.Ruolo;
 import bertcoscia.Epicode_W20BW5.payloads.RuoloDTO;
 import bertcoscia.Epicode_W20BW5.services.RuoloService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/ruoli")
+@RequestMapping("/ruoli")
 public class RuoloController {
     @Autowired
     private RuoloService ruoloService;
@@ -23,20 +25,21 @@ public class RuoloController {
     }
 
     @PostMapping
-    public Ruolo createRuolo(@RequestBody RuoloDTO ruolo) {
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Ruolo createRuolo(@RequestBody @Validated RuoloDTO ruolo) {
         return ruoloService.save(ruolo);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Ruolo> getRuoloById(@PathVariable Long id) {
-        return ruoloService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{ruoloId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Ruolo getRuoloById(@PathVariable UUID ruoloId) {
+        return ruoloService.findById(ruoloId);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRuolo(@PathVariable Long id) {
-        ruoloService.delete(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{ruoloId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void deleteRuolo(@PathVariable UUID ruoloId) {
+        ruoloService.delete(ruoloId);
     }
 }

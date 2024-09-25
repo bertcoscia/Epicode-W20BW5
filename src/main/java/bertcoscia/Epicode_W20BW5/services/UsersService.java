@@ -1,9 +1,11 @@
 package bertcoscia.Epicode_W20BW5.services;
 
+import bertcoscia.Epicode_W20BW5.entities.Ruolo;
 import bertcoscia.Epicode_W20BW5.entities.User;
 import bertcoscia.Epicode_W20BW5.exceptions.BadRequestException;
 import bertcoscia.Epicode_W20BW5.exceptions.NotFoundException;
 import bertcoscia.Epicode_W20BW5.payloads.UserDTO;
+import bertcoscia.Epicode_W20BW5.repositories.RuoloRepository;
 import bertcoscia.Epicode_W20BW5.repositories.UsersRepository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -27,6 +30,8 @@ public class UsersService {
     private PasswordEncoder bcrypt;
     @Autowired
     private Cloudinary cloudinary;
+    @Autowired
+    private RuoloRepository ruoloRepository;
 
     public User saveUser(UserDTO body) {
         if (body == null) {
@@ -34,7 +39,10 @@ public class UsersService {
         } else if (this.usersRepository.existsByEmail(body.email())) {
             throw new BadRequestException("L'email " + body.email() + " è già in uso!");
         } else {
-            User user = new User(body.username(), body.email(), bcrypt.encode(body.password()), body.nome(), body.cognome(), "https://ui-avatars.com/api/?name=" + body.nome() + "+" + body.cognome());
+            Ruolo ruolo = ruoloRepository.findByNome("USER");
+            User user = new User(body.username(), body.email(), bcrypt.encode(body.password()), body.nome(),
+                    body.cognome(), "https://ui-avatars.com/api/?name=" + body.nome() + "+" + body.cognome(),
+                    Set.of(ruolo));
             return this.usersRepository.save(user);
         }
     }
@@ -59,10 +67,11 @@ public class UsersService {
     }
 
     public User findByIdAndUpdate(UUID dipendenteId, UserDTO updateBody) {
-        if (this.usersRepository.existsByEmail(updateBody.email())) {
+        User found = findById(dipendenteId);
+        if (this.usersRepository.existsByEmail(updateBody.email()) && !found.getEmail().equals(updateBody.email())) {
             throw new BadRequestException("L'email " + updateBody.email() + " è già in uso!");
         } else {
-            User found = findById(dipendenteId);
+
             found.setNome(updateBody.nome());
             found.setCognome(updateBody.cognome());
             found.setEmail(updateBody.email());
@@ -77,5 +86,12 @@ public class UsersService {
         dipendente.setAvatarUrl(url);
         usersRepository.save(dipendente);
         return dipendente;
+    }
+
+    public User updateRuolo(UUID userId, String nomeRuolo) {
+        User user = findById(userId);
+        Ruolo ruolo = ruoloRepository.findByNome(nomeRuolo.toUpperCase());
+        user.getRuoli().add(ruolo);
+        return usersRepository.save(user);
     }
 }

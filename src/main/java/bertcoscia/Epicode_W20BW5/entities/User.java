@@ -35,13 +35,14 @@ public class User implements UserDetails {
     @JoinTable(name = "user_ruolo", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "ruolo_id"))
     private Set<Ruolo> ruoli = new HashSet<>();
 
-    public User(String username, String email, String password, String nome, String cognome, String avatarUrl) {
+    public User(String username, String email, String password, String nome, String cognome, String avatarUrl, Set<Ruolo> ruoli) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.nome = nome;
         this.cognome = cognome;
         this.avatarUrl = avatarUrl;
+        this.ruoli = ruoli;
     }
 
     @Override
