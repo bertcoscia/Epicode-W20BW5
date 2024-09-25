@@ -114,5 +114,88 @@ public class ClientiService {
         System.out.println("URL: " + url);
     }
 
+    public Page<Cliente> orderByNameAsc(int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.orderByNameAsc(pageable);
+    }
+
+    public Page<Cliente> orderByNameDesc(int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.orderByNameDesc(pageable);
+    }
+
+    public Page<Cliente> orderByFatturatoAnnualeAsc(int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.orderByFatturatoAnnualeAsc(pageable);
+    }
+
+    public Page<Cliente> orderByFatturatoAnnualeDesc(int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.orderByFatturatoAnnualeDesc(pageable);
+    }
+
+    public Page<Cliente> orderByDataInserimentoAsc(int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.orderByDataInserimentoAsc(pageable);
+    }
+
+    public Page<Cliente> orderByDataInserimentoDesc(int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.orderByDataInserimentoDesc(pageable);
+    }
+
+    public Page<Cliente> orderByDataUltimoContattoAsc(int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.orderByDataUltimoContattoAsc(pageable);
+    }
+
+    public Page<Cliente> orderByDataUltimoContattoDesc(int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.orderByDataUltimoContattoDesc(pageable);
+    }
+
+    public Page<Cliente> orderBySedeLegaleComuneProvinciaNomeAsc(int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.orderBySedeLegaleComuneProvinciaNomeAsc(pageable);
+    }
+
+    public Page<Cliente> orderBySedeLegaleComuneProvinciaNomeDesc(int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.orderBySedeLegaleComuneProvinciaNomeDesc(pageable);
+    }
+
+    public Page<Cliente> filterByFatturatoAnnuale(double fatturatoAnnuale, int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.filterByFatturatoAnnuale(fatturatoAnnuale, pageable);
+    }
+
+    public Page<Cliente> filterByDataInserimento(LocalDate dataInserimento, int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.filterByDataInserimento(dataInserimento, pageable);
+    }
+
+    public Page<Cliente> filterByDataUltimoContatto(LocalDate dataUltimoContatto, int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.filterByDataUltimoContatto(dataUltimoContatto, pageable);
+    }
+
+    public Page<Cliente> filterByNomeLike(String nome, int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.filterByNomeLike(nome, pageable);
+    }
 }
 
