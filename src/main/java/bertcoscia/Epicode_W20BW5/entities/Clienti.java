@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,42 +36,42 @@ public class Clienti {
     private String telefonoContatto;
     private String logoAziendale;
     private TipoCliente tipoCliente;
+    private String sedeLegale;
+    private String sedeOperativa;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "clienti_indirizzi",
-            joinColumns = @JoinColumn(name = "cliente_id"),
-            inverseJoinColumns = @JoinColumn(name = "indirizzo_id")
-    )
-    private List<Indirizzi> indirizzi = new ArrayList<>();
+    @OneToMany
+    private List<Indirizzi> indirizzi;
 
     //Costruttore
 
-    public Clienti(String cognome, LocalDate dataInserimento, LocalDate dataUltimoContatto, String email, String emailContatto, double fatturatoAnnuale,
-                   String logoAziendale, String nomeContatto, String nomeSocieta, String partitaIva, String pec, String telefono, String telefonoContatto, TipoCliente tipoCliente, List<Indirizzi> indirizzi) {
+    public Clienti(String cognome, LocalDate dataInserimento, LocalDate dataUltimoContatto, String email, String emailContatto,
+                   double fatturatoAnnuale, List<Indirizzi> indirizzi, String logoAziendale, String nomeContatto, String nomeSocieta, String partitaIva, String pec, String sedeLegale, String sedeOperativa, String telefono, String telefonoContatto, TipoCliente tipoCliente) {
         this.cognome = cognome;
         this.dataInserimento = dataInserimento;
         this.dataUltimoContatto = dataUltimoContatto;
         this.email = email;
         this.emailContatto = emailContatto;
         this.fatturatoAnnuale = fatturatoAnnuale;
+        this.indirizzi = indirizzi;
         this.logoAziendale = logoAziendale;
         this.nomeContatto = nomeContatto;
         this.nomeSocieta = nomeSocieta;
         this.partitaIva = partitaIva;
         this.pec = pec;
+        this.sedeLegale = sedeLegale;
+        this.sedeOperativa = sedeOperativa;
         this.telefono = telefono;
         this.telefonoContatto = telefonoContatto;
         this.tipoCliente = tipoCliente;
-        this.indirizzi = indirizzi;
     }
 
-    //To string
+//To string
 
     @Override
     public String toString() {
         return "Clienti{" +
                 "cognome='" + cognome + '\'' +
+                ", id=" + id +
                 ", nomeSocieta='" + nomeSocieta + '\'' +
                 ", partitaIva='" + partitaIva + '\'' +
                 ", email='" + email + '\'' +
@@ -86,6 +85,8 @@ public class Clienti {
                 ", telefonoContatto='" + telefonoContatto + '\'' +
                 ", logoAziendale='" + logoAziendale + '\'' +
                 ", tipoCliente=" + tipoCliente +
+                ", sedeLegale='" + sedeLegale + '\'' +
+                ", sedeOperativa='" + sedeOperativa + '\'' +
                 ", indirizzi=" + indirizzi +
                 '}';
     }

@@ -2,7 +2,9 @@ package bertcoscia.Epicode_W20BW5.services;
 
 import bertcoscia.Epicode_W20BW5.entities.Clienti;
 import bertcoscia.Epicode_W20BW5.exceptions.NotFoundException;
+import bertcoscia.Epicode_W20BW5.payloads.NewClienteDTO;
 import bertcoscia.Epicode_W20BW5.repositories.ClientiRepository;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +31,62 @@ public class ClientiService {
     public void findByClienteIdAndDelete(UUID clienteId) {
         Clienti found = this.findClienteById(clienteId);
         this.clientiRepository.delete(found);
+    }
+
+    //Salvataggio
+    public Clienti saveCliente(NewClienteDTO body) {
+        this.clientiRepository.findByEmail(body.email()).ifPresent(
+                dipendente -> {
+                    try {
+                        throw new BadRequestException("L'email " + body.email() + "è già in uso!");
+                    } catch (BadRequestException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
+        Clienti newCliente = new Clienti(body.cognome(), body.dataInserimento(), body.dataUltimoContatto(), body.email(), body.emailContatto(),
+                body.fatturatoAnnuale(), body.indirizzi(), body.logoAziendale(), body.nomeContatto(), body.nomeSocieta(), body.partitaIva(), body.pec(), body.sedeLegale(), body.sedeOperativa(), body.telefono(), body.telefonoContatto(), body.tipoCliente());
+        Clienti savedCliente = this.clientiRepository.save(newCliente);
+        return savedCliente;
+    }
+
+    //Modifica
+    public Clienti findByClienteIdAndUpdate(UUID clienteId, Clienti newClienteData) {
+        // 4.1 Se la mail è già presente
+        this.clientiRepository.findByEmail(newClienteData.getEmail()).ifPresent(
+                dipendente -> {
+                    try {
+                        throw new BadRequestException("L'email " + newClienteData.getEmail() + "è già in uso");
+                    } catch (BadRequestException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
+        Clienti foundCliente = this.findClienteById(clienteId);
+        foundCliente.setCognome(newClienteData.getCognome());
+        foundCliente.setDataInserimento(newClienteData.getDataInserimento());
+        foundCliente.setDataUltimoContatto(newClienteData.getDataUltimoContatto());
+        foundCliente.setEmail(newClienteData.getEmail());
+        foundCliente.setEmailContatto(newClienteData.getEmailContatto());
+        foundCliente.setFatturatoAnnuale(newClienteData.getFatturatoAnnuale());
+        foundCliente.setIndirizzi(newClienteData.getIndirizzi());
+        foundCliente.setLogoAziendale(newClienteData.getLogoAziendale());
+        foundCliente.setNomeContatto(newClienteData.getNomeContatto());
+        foundCliente.setNomeSocieta(newClienteData.getNomeSocieta());
+        foundCliente.setPartitaIva(newClienteData.getPartitaIva());
+        foundCliente.setPec(newClienteData.getPec());
+        foundCliente.setSedeLegale(newClienteData.getSedeLegale());
+        foundCliente.setSedeOperativa(newClienteData.getSedeOperativa());
+        foundCliente.setTelefono(newClienteData.getTelefono());
+        foundCliente.setTelefonoContatto(newClienteData.getTelefonoContatto());
+        foundCliente.setTipoCliente(newClienteData.getTipoCliente());
+        return this.clientiRepository.save(foundCliente);
+    }
 
 
+    public Clienti findByEmail(String email) {
+        return clientiRepository.findByEmail(email).orElseThrow(
+                () -> new NotFoundException("L'utente con l'email " + email + " non è stato trovato!"));
     }
 }
+

@@ -1,6 +1,7 @@
 package bertcoscia.Epicode_W20BW5.payloads;
 
 
+import bertcoscia.Epicode_W20BW5.entities.Indirizzi;
 import bertcoscia.Epicode_W20BW5.enums.TipoCliente;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -8,7 +9,6 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 public record NewClienteDTO(
         @NotEmpty(message = "Il nome della società non può essere vuoto")
@@ -56,6 +56,10 @@ public record NewClienteDTO(
 
         TipoCliente tipoCliente,
 
-        List<UUID> indirizziId
+        String sedeLegale,
+
+        String sedeOperativa,
+
+        List<Indirizzi> indirizzi
 ) {
 }
