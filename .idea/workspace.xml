@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4be5fee6-0ffc-4649-9285-51471195db85" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/EpicodeBuildWeek5/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/EpicodeBuildWeek5/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EpicodeBuildWeek5/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/EpicodeBuildWeek5/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EpicodeBuildWeek5/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/EpicodeBuildWeek5/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EpicodeBuildWeek5/src/components/FormLogin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/EpicodeBuildWeek5/src/components/FormLogin.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EpicodeBuildWeek5/src/components/HomePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/EpicodeBuildWeek5/src/components/HomePage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EpicodeBuildWeek5/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/EpicodeBuildWeek5/src/index.css" afterDir="false" />
     </list>
@@ -46,14 +45,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Front-End",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Front-End&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

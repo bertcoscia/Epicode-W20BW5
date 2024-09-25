@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 const Homepage = () => {
   return (
     <div>
-      <section className="bg-primary text-white text-center py-5">
+      <section className="head text-white text-center py-5">
         <div className="container">
-          <h1 className="display-4">Benvenuti a Epic Energy Services SRL</h1>
+          <h1 className="display-4 fw-bold">
+            Benvenuti a Epic Energy Services SRL
+          </h1>
           <p className="lead">
             Soluzioni elettriche innovative per un futuro sostenibile
           </p>
@@ -28,7 +30,7 @@ const Homepage = () => {
         </div>
       </section>
 
-      <section className="bg-light py-5">
+      <section className=" py-5">
         <div className="container">
           <h2 className="text-center mb-4">I nostri Servizi</h2>
           <div className="row">
@@ -75,7 +77,7 @@ const Homepage = () => {
           <p className="mb-4">
             Vuoi ricevere maggiori informazioni? Siamo qui per aiutarti.
           </p>
-          <a href="#preventivo" className="btn btn-primary btn-lg">
+          <a href="#preventivo" className="btn bg-warning btn-lg">
             Richiedi un Preventivo
           </a>
         </div>
