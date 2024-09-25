@@ -35,6 +35,7 @@ public class Clienti {
     private String cognome;
     private String telefonoContatto;
     private String logoAziendale;
+    @Enumerated(EnumType.STRING)
     private TipoCliente tipoCliente;
     private String sedeLegale;
     private String sedeOperativa;

@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -66,5 +68,11 @@ public class ClientiController {
     @PutMapping("/{clienteId}")
     public Clienti findByIdAndUpdate(@PathVariable UUID clienteId, @RequestBody Clienti body) {
         return this.clientiService.findByClienteIdAndUpdate(clienteId, body);
+    }
+
+    // 7 --> UPLOAD
+    @PostMapping("/{clienteId}/logoAziendale")
+    public void uploadLogoAziendale(@RequestParam("logoAziendale") MultipartFile image) throws IOException {
+        this.clientiService.uploadImg(image);
     }
 }

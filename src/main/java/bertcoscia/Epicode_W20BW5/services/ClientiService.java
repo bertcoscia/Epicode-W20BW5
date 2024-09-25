@@ -4,10 +4,14 @@ import bertcoscia.Epicode_W20BW5.entities.Clienti;
 import bertcoscia.Epicode_W20BW5.exceptions.NotFoundException;
 import bertcoscia.Epicode_W20BW5.payloads.NewClienteDTO;
 import bertcoscia.Epicode_W20BW5.repositories.ClientiRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +20,8 @@ public class ClientiService {
 
     @Autowired
     private ClientiRepository clientiRepository;
+    @Autowired
+    private Cloudinary cloudinaryUploader;
 
     //Find All
     public List<Clienti> findAllClienti() {
@@ -83,10 +89,17 @@ public class ClientiService {
         return this.clientiRepository.save(foundCliente);
     }
 
-
+    //Find Email
     public Clienti findByEmail(String email) {
         return clientiRepository.findByEmail(email).orElseThrow(
                 () -> new NotFoundException("L'utente con l'email " + email + " non è stato trovato!"));
     }
+
+    // IMG CLOUDINARY
+    public void uploadImg(MultipartFile file) throws IOException {
+        String url = (String) cloudinaryUploader.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
+        System.out.println("URL: " + url);
+    }
+
 }
 

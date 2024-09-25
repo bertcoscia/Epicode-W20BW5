@@ -52,12 +52,15 @@ public record NewClienteDTO(
         @Size(min = 10, max = 15, message = "Il numero di telefono del contatto deve essere compreso tra 10 e 15 cifre")
         String telefonoContatto,
 
+
         String logoAziendale,
 
         TipoCliente tipoCliente,
 
+        @NotEmpty(message = "Il telefono del contatto non può essere vuoto")
         String sedeLegale,
 
+        @NotEmpty(message = "Il telefono del contatto non può essere vuoto")
         String sedeOperativa,
 
         List<Indirizzi> indirizzi
