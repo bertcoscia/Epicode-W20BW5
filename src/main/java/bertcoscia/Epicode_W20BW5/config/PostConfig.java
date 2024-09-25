@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class ServerConfig {
+public class PostConfig {
     @Bean
-    public Cloudinary imageUploader(@Value("${cloudinary.name}") String name,
+    public Cloudinary coverUploader(@Value("${cloudinary.name}") String name,
                                     @Value("${cloudinary.key}") String key,
                                     @Value("${cloudinary.secret}") String secret) {
         Map<String, String> configuration = new HashMap<>();
