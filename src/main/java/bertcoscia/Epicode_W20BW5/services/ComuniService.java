@@ -38,38 +38,22 @@ public class ComuniService {
 
             while ((currentLine = lineReader.readLine()) != null) {
                 String[] data = currentLine.split(";"); // Crea un array di stringhe per ogni linea del csv
-
-                if (data.length < 4) continue; // Salta righe con dati incompleti
-
-                if (data[3].equals("Verbano-Cusio-Ossola")) {
-                    data[3] = "Verbania";
-                } else if (data[3].equals("Valle d'Aosta/Vallée d'Aoste")) {
-                    data[3] = "Aosta";
-                } else if (data[3].equals("Monza e della Brianza")) {
-                    data[3] = "Monza-Brianza";
-                } else if (data[3].equals("Bolzano/Bozen")) {
-                    data[3] = "Bolzano";
-                } else if (data[3].equals("La Spezia")) {
-                    data[3] = "La-Spezia";
-                } else if (data[3].equals("Reggio nell'Emilia")) {
-                    data[3] = "Reggio-Emilia";
-                } else if (data[3].equals("Forlì-Cesena")) {
-                    data[3] = "Forli-Cesena";
-                } else if (data[3].equals("Pesaro e Urbino")) {
-                    data[3] = "Pesaro-Urbino";
-                } else if (data[3].equals("Ascoli Piceno")) {
-                    data[3] = "Ascoli-Piceno";
-                } else if (data[3].equals("Reggio Calabria")) {
-                    data[3] = "Reggio-Calabria";
-                } else if (data[3].equals("Vibo Valentia")) {
-                    data[3] = "Vibo-Valentia";
-                } else if (data[3].equals("Sud Sardegna")) {
-                    data[3] = "Sud-Sardegna";
-                }
-
                 Provincia provinciaFound = provinceService.findByName(data[3]);
-                Comune comune = new Comune(data[1], data[0], data[2], provinciaFound);
+                Comune comune = new Comune(data[0], data[1], data[2], provinciaFound);
                 comuniList.add(comune);
+            }
+
+            List<Comune> comuniSassari = comuniList.stream()
+                    .filter(comune -> comune.getProgressivoProvincia().equals("090"))
+                    .toList();
+            for (int i = 0; i < comuniSassari.size(); i++) {
+                if (i < 9) {
+                    comuniSassari.get(i).setProgressivoComune("00" + (i + 1));
+                } else if (i < 99) {
+                    comuniSassari.get(i).setProgressivoComune("0" + (i + 1));
+                } else {
+                    comuniSassari.get(i).setProgressivoComune(String.valueOf(i + 1));
+                }
             }
 
             repository.saveAll(comuniList);

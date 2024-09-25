@@ -19,5 +19,6 @@ public class CsvToPostgressRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // provinceService.importData("src/main/java/bertcoscia/Epicode_W20BW5/files/province-italiane.csv");
         // comuniService.importData("src/main/java/bertcoscia/Epicode_W20BW5/files/comuni-italiani.csv");
+
     }
 }
