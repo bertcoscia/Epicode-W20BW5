@@ -35,12 +35,11 @@ public class Fattura {
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
-    public getNumeroFattura() {
-    }
-
-    public getData() {
-    }
-
-    public getImporto() {
+    public Fattura(Cliente cliente, Date data, double importo, StatoFattura statoFattura, Long numeroFattura) {
+        this.cliente = cliente;
+        this.data = data;
+        this.importo = importo;
+        this.statoFattura = statoFattura;
+        this.numeroFattura = numeroFattura;
     }
 }
