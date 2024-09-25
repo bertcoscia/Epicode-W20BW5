@@ -34,4 +34,13 @@ public class Fattura {
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
+
+    public getNumeroFattura() {
+    }
+
+    public getData() {
+    }
+
+    public getImporto() {
+    }
 }
