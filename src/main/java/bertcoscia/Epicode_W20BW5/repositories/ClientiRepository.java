@@ -21,28 +21,28 @@ public interface ClientiRepository extends JpaRepository<Cliente, UUID> {
 
     boolean existsByPec(String pec);
 
-    @Query(value = "SELECT * FROM clienti ORDER BY name ASC", nativeQuery = true)
+    @Query(value = "SELECT * FROM clienti ORDER BY nome_societa ASC", nativeQuery = true)
     Page<Cliente> orderByNameAsc(Pageable pageable);
 
-    @Query(value = "SELECT * FROM clienti ORDER BY name DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM clienti ORDER BY nome_societa DESC", nativeQuery = true)
     Page<Cliente> orderByNameDesc(Pageable pageable);
 
-    @Query(value = "SELECT * FROM clienti ORDER BY fatturatoAnnuale ASC", nativeQuery = true)
+    @Query(value = "SELECT * FROM clienti ORDER BY fatturato_annuale ASC", nativeQuery = true)
     Page<Cliente> orderByFatturatoAnnualeAsc(Pageable pageable);
 
-    @Query(value = "SELECT * FROM clienti ORDER BY fatturatoAnnuale DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM clienti ORDER BY fatturato_annuale DESC", nativeQuery = true)
     Page<Cliente> orderByFatturatoAnnualeDesc(Pageable pageable);
 
-    @Query(value = "SELECT * FROM clienti ORDER BY dataInserimento ASC", nativeQuery = true)
+    @Query(value = "SELECT * FROM clienti ORDER BY data_inserimento ASC", nativeQuery = true)
     Page<Cliente> orderByDataInserimentoAsc(Pageable pageable);
 
-    @Query(value = "SELECT * FROM clienti ORDER BY dataInserimento DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM clienti ORDER BY data_inserimento DESC", nativeQuery = true)
     Page<Cliente> orderByDataInserimentoDesc(Pageable pageable);
 
-    @Query(value = "SELECT * FROM clienti ORDER BY dataUltimoContatto ASC", nativeQuery = true)
+    @Query(value = "SELECT * FROM clienti ORDER BY data_ultimo_contatto ASC", nativeQuery = true)
     Page<Cliente> orderByDataUltimoContattoAsc(Pageable pageable);
 
-    @Query(value = "SELECT * FROM clienti ORDER BY dataUltimoContatto DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM clienti ORDER BY data_ultimo_contatto DESC", nativeQuery = true)
     Page<Cliente> orderByDataUltimoContattoDesc(Pageable pageable);
 
     @Query("SELECT c FROM Cliente c ORDER BY c.sedeLegale.comune.provincia.nome ASC")
@@ -51,13 +51,13 @@ public interface ClientiRepository extends JpaRepository<Cliente, UUID> {
     @Query("SELECT c FROM Cliente c ORDER BY c.sedeLegale.comune.provincia.nome DESC")
     Page<Cliente> orderBySedeLegaleComuneProvinciaNomeDesc(Pageable pageable);
 
-    Page<Cliente> filterByFatturatoAnnuale(double fatturatoAnnuale, Pageable pageable);
+    Page<Cliente> findByFatturatoAnnuale(double fatturatoAnnuale, Pageable pageable);
 
-    Page<Cliente> filterByDataInserimento(LocalDate dataInserimento, Pageable pageable);
+    Page<Cliente> findByDataInserimento(LocalDate dataInserimento, Pageable pageable);
 
-    Page<Cliente> filterByDataUltimoContatto(LocalDate dataUltimoContatto, Pageable pageable);
+    Page<Cliente> findByDataUltimoContatto(LocalDate dataUltimoContatto, Pageable pageable);
 
-    @Query("SELECT c FROM Cliente c WHERE LOWER(c.nome) LIKE LOWER(CONCAT('%', :nome, '%'))")
-    Page<Cliente> filterByNomeLike(@Param("nome") String nome, Pageable pageable);
+    @Query("SELECT c FROM Cliente c WHERE LOWER(c.nomeSocieta) LIKE LOWER(CONCAT('%', :nomeSocieta, '%'))")
+    Page<Cliente> findByNomeSocietaLike(@Param("nomeSocieta") String nomeSocieta, Pageable pageable);
 
 }

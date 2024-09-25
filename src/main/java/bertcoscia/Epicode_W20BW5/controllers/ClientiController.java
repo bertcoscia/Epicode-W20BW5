@@ -79,4 +79,51 @@ public class ClientiController {
     public void uploadLogoAziendale(@RequestParam("logoAziendale") MultipartFile image) throws IOException {
         this.clientiService.uploadImg(image);
     }
+
+    @GetMapping("/order-name")
+    public Page<Cliente> orderByName(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        boolean ascending = sortOrder.equalsIgnoreCase("asc");
+        return clientiService.orderByName(page, size, ascending);
+    }
+
+    @GetMapping("/order-fatturato")
+    public Page<Cliente> orderByFatturato(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        boolean ascending = sortOrder.equalsIgnoreCase("asc");
+        return clientiService.orderByFatturatoAnnuale(page, size, ascending);
+    }
+
+    @GetMapping("/order-dataInserimento")
+    public Page<Cliente> orderByDataInserimento(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        boolean ascending = sortOrder.equalsIgnoreCase("asc");
+        return clientiService.orderByDataInserimento(page, size, ascending);
+    }
+
+    @GetMapping("/order-dataUltimoContatto")
+    public Page<Cliente> orderByDataUltimoContatto(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        boolean ascending = sortOrder.equalsIgnoreCase("asc");
+        return clientiService.orderByDataUltimoContatto(page, size, ascending);
+    }
+
+    @GetMapping("/order-sedeLegale")
+    public Page<Cliente> orderBySedeLegaleComuneProvinciaNome(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "asc") String sortOrder) {
+        boolean ascending = sortOrder.equalsIgnoreCase("asc");
+        return clientiService.orderBySedeLegaleComuneProvinciaNome(page, size, ascending);
+    }
+
+    // TODO: findByFatturatoAnnuale; findByDataInserimento; findByDataUltimoContatto; findByNomeLike
 }
