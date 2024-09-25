@@ -1,11 +1,12 @@
 package bertcoscia.Epicode_W20BW5.controllers;
 
-import bertcoscia.Epicode_W20BW5.entities.Clienti;
+import bertcoscia.Epicode_W20BW5.entities.Cliente;
 import bertcoscia.Epicode_W20BW5.exceptions.BadRequestException;
 import bertcoscia.Epicode_W20BW5.payloads.NewClienteDTO;
-import bertcoscia.Epicode_W20BW5.payloads.NewClienteRespDTO;
+import bertcoscia.Epicode_W20BW5.payloads.NewEntityRespDTO;
 import bertcoscia.Epicode_W20BW5.services.ClientiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -25,14 +26,17 @@ public class ClientiController {
 
     // 1 --> GET ALL
     @GetMapping
-    public List<Clienti> findAllCliente() {
-        return clientiService.findAllClienti();
+    public Page<Cliente> findAllCliente(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy) {
+        return clientiService.findAllClienti(page, size, sortBy);
     }
 
     // 2 --> GET CLIENTE
 
     @GetMapping("/{clienteId}")
-    public Clienti findByIdCliente(@PathVariable UUID clienteId) {
+    public Cliente findByIdCliente(@PathVariable UUID clienteId) {
         return this.clientiService.findClienteById(clienteId);
     }
 
@@ -47,7 +51,7 @@ public class ClientiController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public NewClienteRespDTO save(@RequestBody @Validated NewClienteDTO body, BindingResult validationResult) {
+    public NewEntityRespDTO save(@RequestBody @Validated NewClienteDTO body, BindingResult validationResult) throws org.apache.coyote.BadRequestException {
 
         if (validationResult.hasErrors()) {
 
@@ -59,14 +63,14 @@ public class ClientiController {
         } else {
 
 
-            return new NewClienteRespDTO(this.clientiService.saveCliente(body).getId());
+            return new NewEntityRespDTO(this.clientiService.saveCliente(body).getId());
         }
 
     }
 
     // 6 -----> PUT
     @PutMapping("/{clienteId}")
-    public Clienti findByIdAndUpdate(@PathVariable UUID clienteId, @RequestBody Clienti body) {
+    public Cliente findByIdAndUpdate(@PathVariable UUID clienteId, @RequestBody Cliente body) throws org.apache.coyote.BadRequestException {
         return this.clientiService.findByClienteIdAndUpdate(clienteId, body);
     }
 

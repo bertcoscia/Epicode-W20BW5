@@ -1,6 +1,8 @@
 package bertcoscia.Epicode_W20BW5.services;
 
-import bertcoscia.Epicode_W20BW5.entities.Clienti;
+import bertcoscia.Epicode_W20BW5.entities.Cliente;
+import bertcoscia.Epicode_W20BW5.entities.Indirizzo;
+import bertcoscia.Epicode_W20BW5.enums.TipoCliente;
 import bertcoscia.Epicode_W20BW5.exceptions.NotFoundException;
 import bertcoscia.Epicode_W20BW5.payloads.NewClienteDTO;
 import bertcoscia.Epicode_W20BW5.repositories.ClientiRepository;
@@ -8,11 +10,15 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -22,75 +28,82 @@ public class ClientiService {
     private ClientiRepository clientiRepository;
     @Autowired
     private Cloudinary cloudinaryUploader;
+    @Autowired
+    private IndirizziService indirizziService;
 
     //Find All
-    public List<Clienti> findAllClienti() {
-        return clientiRepository.findAll();
+    public Page<Cliente> findAllClienti(int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.findAll(pageable);
     }
 
     // Find by ID
-    public Clienti findClienteById(UUID clienteId) {
+    public Cliente findClienteById(UUID clienteId) {
         return this.clientiRepository.findById(clienteId).orElseThrow(() -> new NotFoundException(clienteId));
     }
 
     // DELETE
     public void findByClienteIdAndDelete(UUID clienteId) {
-        Clienti found = this.findClienteById(clienteId);
+        Cliente found = this.findClienteById(clienteId);
         this.clientiRepository.delete(found);
     }
 
     //Salvataggio
-    public Clienti saveCliente(NewClienteDTO body) {
-        this.clientiRepository.findByEmail(body.email()).ifPresent(
-                dipendente -> {
-                    try {
-                        throw new BadRequestException("L'email " + body.email() + "è già in uso!");
-                    } catch (BadRequestException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-        );
-        Clienti newCliente = new Clienti(body.cognome(), body.dataInserimento(), body.dataUltimoContatto(), body.email(), body.emailContatto(),
-                body.fatturatoAnnuale(), body.indirizzi(), body.logoAziendale(), body.nomeContatto(), body.nomeSocieta(), body.partitaIva(), body.pec(), body.sedeLegale(), body.sedeOperativa(), body.telefono(), body.telefonoContatto(), body.tipoCliente());
-        Clienti savedCliente = this.clientiRepository.save(newCliente);
-        return savedCliente;
+    public Cliente saveCliente(NewClienteDTO body) throws BadRequestException {
+        if (this.clientiRepository.existsByEmail(body.email())) throw new BadRequestException("Esiste già un cliente con email " + body.email());
+        if (this.clientiRepository.existsByPartitaIva(body.partitaIva())) throw new BadRequestException("Esiste già un cliente con partita IVA " + body.partitaIva());
+        if (this.clientiRepository.existsByPec(body.pec())) throw new BadRequestException("Esiste già un cliente con PEC " + body.pec());
+        LocalDate dataInserimento = LocalDate.parse(body.dataInserimento());
+        LocalDate dataUltimoContatto = LocalDate.parse(body.dataUltimoContatto());
+        TipoCliente tipoCliente;
+        if (body.tipoCliente().equalsIgnoreCase("PA")) {
+            tipoCliente = TipoCliente.PA;
+        } else if (body.tipoCliente().equalsIgnoreCase("SAS")) {
+            tipoCliente = TipoCliente.SAS;
+        } else if (body.tipoCliente().equalsIgnoreCase("SPA")) {
+            tipoCliente = TipoCliente.SPA;
+        } else if (body.tipoCliente().equalsIgnoreCase("SRL")) {
+            tipoCliente = TipoCliente.SRL;
+        } else {
+            throw new BadRequestException("Tipo cliente non valido. Scegliere uno tra PA, SAS, SPA, SRL");
+        }
+        Indirizzo sedeLegaleFound = this.indirizziService.findById(UUID.fromString(body.sedeLegale()));
+        Indirizzo sedeOperativaFound = this.indirizziService.findById(UUID.fromString(body.sedeOperativa()));
+        return this.clientiRepository.save(new Cliente(body.nomeSocieta(), body.partitaIva(), body.email(), dataInserimento, dataUltimoContatto,
+                body.fatturatoAnnuale(), body.pec(), body.telefono(), body.emailContatto(), body.nomeContatto(), body.cognome(), body.telefonoContatto(),
+                body.logoAziendale(), tipoCliente, sedeLegaleFound, sedeOperativaFound));
     }
 
     //Modifica
-    public Clienti findByClienteIdAndUpdate(UUID clienteId, Clienti newClienteData) {
-        // 4.1 Se la mail è già presente
-        this.clientiRepository.findByEmail(newClienteData.getEmail()).ifPresent(
-                dipendente -> {
-                    try {
-                        throw new BadRequestException("L'email " + newClienteData.getEmail() + "è già in uso");
-                    } catch (BadRequestException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-        );
-        Clienti foundCliente = this.findClienteById(clienteId);
-        foundCliente.setCognome(newClienteData.getCognome());
-        foundCliente.setDataInserimento(newClienteData.getDataInserimento());
-        foundCliente.setDataUltimoContatto(newClienteData.getDataUltimoContatto());
-        foundCliente.setEmail(newClienteData.getEmail());
-        foundCliente.setEmailContatto(newClienteData.getEmailContatto());
-        foundCliente.setFatturatoAnnuale(newClienteData.getFatturatoAnnuale());
-        foundCliente.setIndirizzi(newClienteData.getIndirizzi());
-        foundCliente.setLogoAziendale(newClienteData.getLogoAziendale());
-        foundCliente.setNomeContatto(newClienteData.getNomeContatto());
-        foundCliente.setNomeSocieta(newClienteData.getNomeSocieta());
-        foundCliente.setPartitaIva(newClienteData.getPartitaIva());
-        foundCliente.setPec(newClienteData.getPec());
-        foundCliente.setSedeLegale(newClienteData.getSedeLegale());
-        foundCliente.setSedeOperativa(newClienteData.getSedeOperativa());
-        foundCliente.setTelefono(newClienteData.getTelefono());
-        foundCliente.setTelefonoContatto(newClienteData.getTelefonoContatto());
-        foundCliente.setTipoCliente(newClienteData.getTipoCliente());
-        return this.clientiRepository.save(foundCliente);
+    public Cliente findByClienteIdAndUpdate(UUID clienteId, Cliente body) throws BadRequestException {
+        Cliente clienteFound = this.findClienteById(clienteId);
+        if (!clienteFound.getId().equals(body.getId()) && this.clientiRepository.existsByEmail(body.getEmail())) throw new BadRequestException("Esiste già un cliente con email " + body.getEmail());
+        if (!clienteFound.getId().equals(body.getId()) && this.clientiRepository.existsByPartitaIva(body.getPartitaIva())) throw new BadRequestException("Esiste già un cliente con partita IVA " + body.getPartitaIva());
+        if (!clienteFound.getId().equals(body.getId()) && this.clientiRepository.existsByPec(body.getPec())) throw new BadRequestException("Esiste già un cliente con PEC " + body.getPec());
+        clienteFound.setCognome(body.getCognome());
+        clienteFound.setDataInserimento(body.getDataInserimento());
+        clienteFound.setDataUltimoContatto(body.getDataUltimoContatto());
+        clienteFound.setEmail(body.getEmail());
+        clienteFound.setEmailContatto(body.getEmailContatto());
+        clienteFound.setFatturatoAnnuale(body.getFatturatoAnnuale());
+        clienteFound.setLogoAziendale(body.getLogoAziendale());
+        clienteFound.setNomeContatto(body.getNomeContatto());
+        clienteFound.setNomeSocieta(body.getNomeSocieta());
+        clienteFound.setPartitaIva(body.getPartitaIva());
+        clienteFound.setPec(body.getPec());
+        Indirizzo sedeLegaleFound = this.indirizziService.findById(body.getSedeLegale().getIdIndirizzo());
+        clienteFound.setSedeLegale(sedeLegaleFound);
+        Indirizzo sedeOperativaFound = this.indirizziService.findById(body.getSedeOperativa().getIdIndirizzo());
+        clienteFound.setSedeOperativa(sedeOperativaFound);
+        clienteFound.setTelefono(body.getTelefono());
+        clienteFound.setTelefonoContatto(body.getTelefonoContatto());
+        clienteFound.setTipoCliente(body.getTipoCliente());
+        return this.clientiRepository.save(clienteFound);
     }
 
     //Find Email
-    public Clienti findByEmail(String email) {
+    public Cliente findByEmail(String email) {
         return clientiRepository.findByEmail(email).orElseThrow(
                 () -> new NotFoundException("L'utente con l'email " + email + " non è stato trovato!"));
     }
