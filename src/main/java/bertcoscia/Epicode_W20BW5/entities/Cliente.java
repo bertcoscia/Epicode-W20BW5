@@ -8,16 +8,16 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Entity
-@Table(name = "stati_fatture")
+@Table(name = "clienti")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StatoFattura {
+public class Cliente {
 
     @Id
     @GeneratedValue
     private UUID id;
 
-    @Column(name = "nome_stato")
-    private String nomeStato;
+    @Column(name = "nome_societa")
+    private String nomeSocieta;
 }

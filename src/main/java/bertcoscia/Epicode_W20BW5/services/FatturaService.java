@@ -6,27 +6,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class FatturaService {
 
     @Autowired
-    private FatturaRepository atturaRepository;
+    private FatturaRepository fatturaRepository;
 
-    public List<Fattura> findAll() {
+    public List<Fattura> getAllFatture() {
         return fatturaRepository.findAll();
     }
 
-    public Fattura findById(UUID id) {
-        return fatturaRepository.findById(id).orElse(null);
+    public Optional<Fattura> getFatturaById(UUID id) {
+        return fatturaRepository.findById(id);
     }
 
-    public Fattura save(Fattura fattura) {
+    public Fattura saveFattura(Fattura fattura) {
         return fatturaRepository.save(fattura);
     }
 
-    public void deleteById(UUID id) {
+    public void deleteFattura(UUID id) {
         fatturaRepository.deleteById(id);
     }
 }
