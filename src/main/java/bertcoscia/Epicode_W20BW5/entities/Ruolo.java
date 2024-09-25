@@ -11,12 +11,25 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
+@Table(name = "ruoli")
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Ruolo {
+    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue
     private UUID id;
     private String nome;
     @ManyToMany(mappedBy = "ruoli")
     private Set<User> users = new HashSet<>();
+    /*
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "ruoli_permessi",
+            joinColumns = @JoinColumn(name = "ruolo_id"),
+            inverseJoinColumns = @JoinColumn(name = "permesso_id")
+    )*/
+    //private List<Permesso> permessi = new ArrayList<>();
 }
