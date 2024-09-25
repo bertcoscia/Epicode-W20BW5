@@ -46,8 +46,6 @@ public class Config {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://mywonderfulfe.com"));
-        // whitelist con uno o più indirizzi dei frontend che voglio che accedano a questo backend. Se voglio permettere l'accesso a tutti
-        // (anche se un po' rischioso) basta mettere "*"
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
 
