@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -19,9 +19,7 @@ public class Fattura {
     @Id
     @GeneratedValue
     private UUID id;
-
-    private Date data;
-
+    private LocalDate data;
     private double importo;
 
     @Column(name = "numero_fattura", unique = true)
@@ -35,11 +33,10 @@ public class Fattura {
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
-    public Fattura(Cliente cliente, Date data, double importo, StatoFattura statoFattura, Long numeroFattura) {
+    public Fattura(Cliente cliente, LocalDate data, double importo, StatoFattura statoFattura) {
         this.cliente = cliente;
         this.data = data;
         this.importo = importo;
         this.statoFattura = statoFattura;
-        this.numeroFattura = numeroFattura;
     }
 }
