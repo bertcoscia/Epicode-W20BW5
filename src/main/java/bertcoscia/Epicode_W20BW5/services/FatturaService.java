@@ -93,6 +93,30 @@ public class FatturaService {
         found.setStatoFattura(statoFattura);
         found.setImporto(updateBody.importo());
         return fatturaRepository.save(found);
+    }
 
+    public Page<Fattura> findFattureByCliente(UUID clienteId, int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return fatturaRepository.findByClienteId(clienteId, pageable);
+    }
+
+    public Page<Fattura> findFattureByStato(UUID statoId, int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return fatturaRepository.findByStatoId(statoId, pageable);
+    }
+
+    public Page<Fattura> findFattureByData(LocalDate startDate, LocalDate endDate, int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return fatturaRepository.findByDataBetween(startDate, endDate, pageable);
+    }
+
+    public Page<Fattura> findFattureByAnno(int anno, int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return fatturaRepository.findByAnno(anno, pageable);
+    }
+
+    public Page<Fattura> findFattureByImportoRange(Double minImporto, Double maxImporto, int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return fatturaRepository.findByImportoBetween(minImporto, maxImporto, pageable);
     }
 }
