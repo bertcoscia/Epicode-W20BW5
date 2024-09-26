@@ -7,7 +7,6 @@ import bertcoscia.Epicode_W20BW5.exceptions.BadRequestException;
 import bertcoscia.Epicode_W20BW5.exceptions.NotFoundException;
 import bertcoscia.Epicode_W20BW5.payloads.FatturaDTO;
 import bertcoscia.Epicode_W20BW5.repositories.FatturaRepository;
-import bertcoscia.Epicode_W20BW5.repositories.StatoFatturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +24,7 @@ public class FatturaService {
     @Autowired
     private FatturaRepository fatturaRepository;
     @Autowired
-    private StatoFatturaRepository statoFatturaRepository;
+    private StatoFattureService statoFattureService;
     @Autowired
     private ClientiService clientiService;
 
@@ -54,7 +53,7 @@ public class FatturaService {
         }
         StatoFattura statoFattura;
         try {
-            statoFattura = statoFatturaRepository.findByNomeStato(body.nomeStatoFattura());
+            statoFattura = statoFattureService.findByNomeStato(body.nomeStatoFattura());
         } catch (IllegalArgumentException e) {
             throw new BadRequestException("Il nome dello stato fattura non è valido: " + body.nomeStatoFattura());
         }
@@ -84,7 +83,7 @@ public class FatturaService {
         }
         StatoFattura statoFattura;
         try {
-            statoFattura = statoFatturaRepository.findByNomeStato(updateBody.nomeStatoFattura());
+            statoFattura = statoFattureService.findByNomeStato(updateBody.nomeStatoFattura());
         } catch (IllegalArgumentException e) {
             throw new BadRequestException("Il nome dello stato fattura non è valido: " + updateBody.nomeStatoFattura());
         }

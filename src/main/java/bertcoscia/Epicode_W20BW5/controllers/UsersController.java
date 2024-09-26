@@ -21,7 +21,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UsersController {
     @Autowired
     private UsersService usersService;
