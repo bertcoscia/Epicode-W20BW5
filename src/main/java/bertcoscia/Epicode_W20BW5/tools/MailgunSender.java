@@ -17,7 +17,6 @@ public class MailgunSender {
                          @Value("${mailgun.domain}") String domainName) {
         this.apiKey = apiKey;
         this.domainName = domainName;
-
     }
 
     public void sendEmail(Cliente recipient, String subject, String body) {
