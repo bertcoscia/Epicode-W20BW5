@@ -144,5 +144,21 @@ public class ClientiController {
         return this.clientiService.findByDataInserimento(data, page, size, sortBy);
     }
 
-    // TODO: findByDataUltimoContatto; findByNomeLike
+    @GetMapping("/filter-dataUltimoContatto")
+    public Page<Cliente> findByDataUltimoContatto(
+            @RequestParam LocalDate data,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "nomeSocieta") String sortBy) {
+        return this.clientiService.findByDataUltimoContatto(data, page, size, sortBy);
+    }
+
+    @GetMapping("/filter-nome")
+    public Page<Cliente> findByNomeLike(
+            @RequestParam String nome,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "nomeSocieta") String sortBy) {
+        return this.clientiService.findByNomeLike(nome, page, size, sortBy);
+    }
 }
