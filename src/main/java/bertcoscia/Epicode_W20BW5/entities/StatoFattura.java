@@ -20,4 +20,8 @@ public class StatoFattura {
 
     @Column(name = "nome_stato")
     private String nomeStato;
+
+    public StatoFattura(String nomeStato) {
+        this.nomeStato = nomeStato;
+    }
 }

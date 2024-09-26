@@ -63,22 +63,21 @@ public class UsersService {
         return this.usersRepository.findAll(pageable);
     }
 
-    public void findByIdAndDelete(UUID dipendenteId) {
-        User found = findById(dipendenteId);
+    public void findByIdAndDelete(UUID userId) {
+        User found = findById(userId);
         this.usersRepository.delete(found);
     }
 
-    public User findByIdAndUpdate(UUID dipendenteId, UserDTO updateBody) {
-        User found = findById(dipendenteId);
+    public User findByIdAndUpdate(UUID userId, UserDTO updateBody) {
+        User found = findById(userId);
         if (this.usersRepository.existsByEmail(updateBody.email()) && !found.getEmail().equals(updateBody.email())) {
             throw new BadRequestException("L'email " + updateBody.email() + " è già in uso!");
         } else {
-
             found.setNome(updateBody.nome());
             found.setCognome(updateBody.cognome());
             found.setEmail(updateBody.email());
             found.setPassword(updateBody.password());
-            return found;
+            return usersRepository.save(found);
         }
     }
 
@@ -86,8 +85,7 @@ public class UsersService {
         User dipendente = findById(dipendenteId);
         String url = (String) cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
         dipendente.setAvatarUrl(url);
-        usersRepository.save(dipendente);
-        return dipendente;
+        return usersRepository.save(dipendente);
     }
 
     public User updateRuolo(UUID userId, UserUpRuoloDTO nomeRuolo) {

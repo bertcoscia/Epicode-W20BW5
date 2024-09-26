@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface RuoloRepository extends JpaRepository<Ruolo, UUID> {
     public Ruolo findByNome(String nome);
+
+    public boolean existsByNome(String nome);
 }

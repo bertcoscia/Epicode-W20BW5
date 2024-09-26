@@ -21,7 +21,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UsersController {
     @Autowired
     private UsersService usersService;
@@ -64,7 +64,7 @@ public class UsersController {
     }
 
     @PutMapping("/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')") // Solo gli admin possono modificare gli utenti
+    @PreAuthorize("hasAuthority('ADMIN')")
     public User findByIdAndUpdate(@PathVariable UUID userId, @RequestBody @Validated UserDTO body, BindingResult validationResult) {
         if (validationResult.hasErrors()) {
             String messages = validationResult.getAllErrors().stream()

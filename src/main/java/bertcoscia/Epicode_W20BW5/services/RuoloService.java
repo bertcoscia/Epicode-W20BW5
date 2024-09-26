@@ -23,9 +23,12 @@ public class RuoloService {
     public Ruolo save(RuoloDTO body) {
         if (body == null) {
             throw new BadRequestException("Devi inserire il body del Ruolo!");
+        } else if (ruoloRepository.existsByNome(body.nome())) {
+            throw new BadRequestException("Questo Ruolo è gia presente!");
+        } else {
+            Ruolo ruolo = new Ruolo(body.nome().toUpperCase());
+            return ruoloRepository.save(ruolo);
         }
-        Ruolo ruolo = new Ruolo(body.nome().toUpperCase());
-        return ruoloRepository.save(ruolo);
     }
 
     public Ruolo findById(UUID ruoloId) {
