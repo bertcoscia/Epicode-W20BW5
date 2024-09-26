@@ -6,6 +6,7 @@ import bertcoscia.Epicode_W20BW5.enums.TipoCliente;
 import bertcoscia.Epicode_W20BW5.exceptions.NotFoundException;
 import bertcoscia.Epicode_W20BW5.payloads.NewClienteDTO;
 import bertcoscia.Epicode_W20BW5.repositories.ClientiRepository;
+import bertcoscia.Epicode_W20BW5.specs.ClientiSpecs;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.apache.coyote.BadRequestException;
@@ -14,11 +15,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -32,10 +35,35 @@ public class ClientiService {
     private IndirizziService indirizziService;
 
     //Find All
-    public Page<Cliente> findAllClienti(int page, int size, String sortBy) {
+    public Page<Cliente> findAllClienti(int page, int size, String sortBy, Sort.Direction direction, Map<String, String> params) {
         if (page > 100) page = 100;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return this.clientiRepository.findAll(pageable);
+        Pageable pageable;
+        if ("provincia".equalsIgnoreCase(sortBy)) {
+            pageable = PageRequest.of(page, size, Sort.by(direction, "sedeLegale.comune.provincia.nome"));
+        } else {
+            pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+        }
+        // Costruzione delle specifiche
+        Specification<Cliente> spec = Specification.where(null); // Inizializza la specifica a null
+
+        // Aggiungi specifiche in base ai parametri
+        if (params.containsKey("fatturato")) {
+            Long fatturato = Long.valueOf(params.get("fatturato"));
+            spec = spec.and(ClientiSpecs.hasFatturato(fatturato));
+        }
+        if (params.containsKey("dataInserimento")) {
+            LocalDate dataInserimento = LocalDate.parse(params.get("dataInserimento"));
+            spec = spec.and(ClientiSpecs.hasDataInserimento(dataInserimento));
+        }
+        if (params.containsKey("dataUltimoContatto")) {
+            LocalDate dataUltimoContatto = LocalDate.parse(params.get("dataUltimoContatto"));
+            spec = spec.and(ClientiSpecs.hasDataUltimoContatto(dataUltimoContatto));
+        }
+        if (params.containsKey("nome")) {
+            String nome = params.get("nome");
+            spec = spec.and(ClientiSpecs.hasNomeLike(nome));
+        }
+        return clientiRepository.findAll(spec, pageable);
     }
 
     // Find by ID
@@ -114,58 +142,5 @@ public class ClientiService {
         System.out.println("URL: " + url);
     }
 
-    public Page<Cliente> orderByName(int page, int size, boolean asc) {
-        if (page > 100) page = 100;
-        Pageable pageable = PageRequest.of(page, size);
-        return asc ? this.clientiRepository.orderByNameAsc(pageable) : this.clientiRepository.orderByNameDesc(pageable);
-    }
-
-    public Page<Cliente> orderByFatturatoAnnuale(int page, int size, boolean asc) {
-        if (page > 100) page = 100;
-        Pageable pageable = PageRequest.of(page, size);
-        return asc ? this.clientiRepository.orderByFatturatoAnnualeAsc(pageable) : this.clientiRepository.orderByFatturatoAnnualeDesc(pageable);
-    }
-
-    public Page<Cliente> orderByDataInserimento(int page, int size, boolean asc) {
-        if (page > 100) page = 100;
-        Pageable pageable = PageRequest.of(page, size);
-        return asc ? this.clientiRepository.orderByDataInserimentoAsc(pageable) : this.clientiRepository.orderByDataInserimentoDesc(pageable);
-    }
-
-    public Page<Cliente> orderByDataUltimoContatto(int page, int size, boolean asc) {
-        if (page > 100) page = 100;
-        Pageable pageable = PageRequest.of(page, size);
-        return asc ? this.clientiRepository.orderByDataUltimoContattoAsc(pageable) : this.clientiRepository.orderByDataUltimoContattoDesc(pageable);
-    }
-
-    public Page<Cliente> orderBySedeLegaleComuneProvinciaNome(int page, int size, boolean asc) {
-        if (page > 100) page = 100;
-        Pageable pageable = PageRequest.of(page, size);
-        return asc ? this.clientiRepository.orderBySedeLegaleComuneProvinciaNomeAsc(pageable) : this.clientiRepository.orderBySedeLegaleComuneProvinciaNomeDesc(pageable);
-    }
-
-    public Page<Cliente> findByFatturatoAnnuale(double fatturatoAnnuale, int page, int size, String sortBy) {
-        if (page > 100) page = 100;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return this.clientiRepository.findByFatturatoAnnuale(fatturatoAnnuale, pageable);
-    }
-
-    public Page<Cliente> findByDataInserimento(LocalDate dataInserimento, int page, int size, String sortBy) {
-        if (page > 100) page = 100;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return this.clientiRepository.findByDataInserimento(dataInserimento, pageable);
-    }
-
-    public Page<Cliente> findByDataUltimoContatto(LocalDate dataUltimoContatto, int page, int size, String sortBy) {
-        if (page > 100) page = 100;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return this.clientiRepository.findByDataUltimoContatto(dataUltimoContatto, pageable);
-    }
-
-    public Page<Cliente> findByNomeLike(String nome, int page, int size, String sortBy) {
-        if (page > 100) page = 100;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return this.clientiRepository.findByNomeSocietaLike(nome, pageable);
-    }
 }
 
