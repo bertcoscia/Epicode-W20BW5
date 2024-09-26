@@ -2,6 +2,7 @@ package bertcoscia.Epicode_W20BW5.controllers;
 
 import bertcoscia.Epicode_W20BW5.entities.User;
 import bertcoscia.Epicode_W20BW5.exceptions.BadRequestException;
+import bertcoscia.Epicode_W20BW5.payloads.EmailRequestDTO;
 import bertcoscia.Epicode_W20BW5.payloads.UserDTO;
 import bertcoscia.Epicode_W20BW5.payloads.UserUpRuoloDTO;
 import bertcoscia.Epicode_W20BW5.services.UsersService;
@@ -106,14 +107,13 @@ public class UsersController {
         }
     }
 
-    @PostMapping("/send-email/{clientId}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/send-email/{clienteId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> sendEmailToUser(
-            @PathVariable UUID clientId,
-            @RequestParam String subject,
-            @RequestParam String body) {
+            @PathVariable UUID clienteId,
+            @RequestBody EmailRequestDTO emailRequestDTO) {
 
-        String response = usersService.sendEmailToClient(clientId, subject, body);
+        String response = usersService.sendEmailToClient(clienteId, emailRequestDTO.subject(), emailRequestDTO.body());
 
         if (response.startsWith("Email inviata a")) {
             return ResponseEntity.ok(response);
