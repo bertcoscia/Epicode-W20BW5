@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,10 +25,13 @@ public class StatoFattureController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Page<StatoFattura> findAll(@RequestParam(defaultValue = "0") int page,
+    /*public Page<StatoFattura> findAll(@RequestParam(defaultValue = "0") int page,
                                       @RequestParam(defaultValue = "10") int size,
                                       @RequestParam(defaultValue = "id") String sortBy) {
         return this.statoFattureService.findAll(page, size, sortBy);
+    }*/
+    public List<StatoFattura> findAll() {
+        return this.statoFattureService.findAll();
     }
 
     @GetMapping("/{statoFatturaId}")

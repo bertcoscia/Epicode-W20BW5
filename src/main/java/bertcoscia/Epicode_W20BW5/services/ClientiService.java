@@ -43,10 +43,7 @@ public class ClientiService {
         } else {
             pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
         }
-        // Costruzione delle specifiche
-        Specification<Cliente> spec = Specification.where(null); // Inizializza la specifica a null
-
-        // Aggiungi specifiche in base ai parametri
+        Specification<Cliente> spec = Specification.where(null);
         if (params.containsKey("fatturato")) {
             Long fatturato = Long.valueOf(params.get("fatturato"));
             spec = spec.and(ClientiSpecs.hasFatturato(fatturato));

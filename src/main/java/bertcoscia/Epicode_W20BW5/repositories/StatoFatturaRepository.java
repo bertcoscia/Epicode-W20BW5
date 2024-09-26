@@ -9,7 +9,8 @@ import java.util.UUID;
 
 @Repository
 public interface StatoFatturaRepository extends JpaRepository<StatoFattura, UUID> {
-    public Optional<StatoFattura> findByNomeStato(String nome);
 
-    public boolean existsByNomeStato(String nomeStato);
+    Optional<StatoFattura> findByNomeStatoIgnoreCase(String nome);
+
+    public boolean existsByNomeStatoIgnoreCase(String nomeStato);
 }
