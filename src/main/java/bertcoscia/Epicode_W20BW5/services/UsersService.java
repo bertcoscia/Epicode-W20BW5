@@ -1,13 +1,16 @@
 package bertcoscia.Epicode_W20BW5.services;
 
+import bertcoscia.Epicode_W20BW5.entities.Cliente;
 import bertcoscia.Epicode_W20BW5.entities.Ruolo;
 import bertcoscia.Epicode_W20BW5.entities.User;
 import bertcoscia.Epicode_W20BW5.exceptions.BadRequestException;
 import bertcoscia.Epicode_W20BW5.exceptions.NotFoundException;
 import bertcoscia.Epicode_W20BW5.payloads.UserDTO;
 import bertcoscia.Epicode_W20BW5.payloads.UserUpRuoloDTO;
+import bertcoscia.Epicode_W20BW5.repositories.ClientiRepository;
 import bertcoscia.Epicode_W20BW5.repositories.RuoloRepository;
 import bertcoscia.Epicode_W20BW5.repositories.UsersRepository;
+import bertcoscia.Epicode_W20BW5.tools.MailgunSender;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,10 @@ public class UsersService {
     private Cloudinary cloudinary;
     @Autowired
     private RuoloRepository ruoloRepository;
+    @Autowired
+    private MailgunSender mailgunSender;
+    @Autowired
+    private ClientiRepository clientiRepository;
 
     public User saveUser(UserDTO body) {
         if (body == null) {
@@ -100,4 +107,14 @@ public class UsersService {
         user.getRuoli().add(ruolo);
         return usersRepository.save(user);
     }
+
+    public String sendEmailToClient(UUID clienteId, String subject, String body) {
+        Cliente client = clientiRepository.findById(clienteId)
+                .orElseThrow(() -> new NotFoundException("Client con id " + clienteId + " non trovato"));
+
+        mailgunSender.sendEmail(client, subject, body);
+        return "Email inviata a " + client.getEmail();
+    }
 }
+
+
