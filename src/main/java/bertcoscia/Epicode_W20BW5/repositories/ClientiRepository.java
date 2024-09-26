@@ -22,14 +22,4 @@ public interface ClientiRepository extends JpaRepository<Cliente, UUID>, JpaSpec
 
     boolean existsByPec(String pec);
 
-
-    Page<Cliente> findByFatturatoAnnuale(double fatturatoAnnuale, Pageable pageable);
-
-    Page<Cliente> findByDataInserimento(LocalDate dataInserimento, Pageable pageable);
-
-    Page<Cliente> findByDataUltimoContatto(LocalDate dataUltimoContatto, Pageable pageable);
-
-    @Query("SELECT c FROM Cliente c WHERE LOWER(c.nomeSocieta) LIKE LOWER(CONCAT('%', :nomeSocieta, '%'))")
-    Page<Cliente> findByNomeSocietaLike(@Param("nomeSocieta") String nomeSocieta, Pageable pageable);
-
 }

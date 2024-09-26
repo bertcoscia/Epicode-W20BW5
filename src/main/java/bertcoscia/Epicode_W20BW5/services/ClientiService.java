@@ -142,28 +142,5 @@ public class ClientiService {
         System.out.println("URL: " + url);
     }
 
-    public Page<Cliente> findByFatturatoAnnuale(double fatturatoAnnuale, int page, int size, String sortBy) {
-        if (page > 100) page = 100;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return this.clientiRepository.findByFatturatoAnnuale(fatturatoAnnuale, pageable);
-    }
-
-    public Page<Cliente> findByDataInserimento(LocalDate dataInserimento, int page, int size, String sortBy) {
-        if (page > 100) page = 100;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return this.clientiRepository.findByDataInserimento(dataInserimento, pageable);
-    }
-
-    public Page<Cliente> findByDataUltimoContatto(LocalDate dataUltimoContatto, int page, int size, String sortBy) {
-        if (page > 100) page = 100;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return this.clientiRepository.findByDataUltimoContatto(dataUltimoContatto, pageable);
-    }
-
-    public Page<Cliente> findByNomeLike(String nome, int page, int size, String sortBy) {
-        if (page > 100) page = 100;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return this.clientiRepository.findByNomeSocietaLike(nome, pageable);
-    }
 }
 

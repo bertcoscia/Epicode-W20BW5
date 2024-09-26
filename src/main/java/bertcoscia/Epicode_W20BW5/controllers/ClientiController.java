@@ -85,40 +85,4 @@ public class ClientiController {
     public void uploadLogoAziendale(@RequestParam("logoAziendale") MultipartFile image) throws IOException {
         this.clientiService.uploadImg(image);
     }
-
-    @GetMapping("/filter-fatturato")
-    public Page<Cliente> findByFatturatoAnnuale(
-            @RequestParam double fatturato,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy) {
-        return this.clientiService.findByFatturatoAnnuale(fatturato, page, size, sortBy);
-    }
-
-    @GetMapping("/filter-dataInserimento")
-    public Page<Cliente> findByDataInserimento(
-            @RequestParam LocalDate data,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "nomeSocieta") String sortBy) {
-        return this.clientiService.findByDataInserimento(data, page, size, sortBy);
-    }
-
-    @GetMapping("/filter-dataUltimoContatto")
-    public Page<Cliente> findByDataUltimoContatto(
-            @RequestParam LocalDate data,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "nomeSocieta") String sortBy) {
-        return this.clientiService.findByDataUltimoContatto(data, page, size, sortBy);
-    }
-
-    @GetMapping("/filter-nome")
-    public Page<Cliente> findByNomeLike(
-            @RequestParam String nome,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "nomeSocieta") String sortBy) {
-        return this.clientiService.findByNomeLike(nome, page, size, sortBy);
-    }
 }
