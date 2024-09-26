@@ -114,5 +114,58 @@ public class ClientiService {
         System.out.println("URL: " + url);
     }
 
+    public Page<Cliente> orderByName(int page, int size, boolean asc) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size);
+        return asc ? this.clientiRepository.orderByNameAsc(pageable) : this.clientiRepository.orderByNameDesc(pageable);
+    }
+
+    public Page<Cliente> orderByFatturatoAnnuale(int page, int size, boolean asc) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size);
+        return asc ? this.clientiRepository.orderByFatturatoAnnualeAsc(pageable) : this.clientiRepository.orderByFatturatoAnnualeDesc(pageable);
+    }
+
+    public Page<Cliente> orderByDataInserimento(int page, int size, boolean asc) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size);
+        return asc ? this.clientiRepository.orderByDataInserimentoAsc(pageable) : this.clientiRepository.orderByDataInserimentoDesc(pageable);
+    }
+
+    public Page<Cliente> orderByDataUltimoContatto(int page, int size, boolean asc) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size);
+        return asc ? this.clientiRepository.orderByDataUltimoContattoAsc(pageable) : this.clientiRepository.orderByDataUltimoContattoDesc(pageable);
+    }
+
+    public Page<Cliente> orderBySedeLegaleComuneProvinciaNome(int page, int size, boolean asc) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size);
+        return asc ? this.clientiRepository.orderBySedeLegaleComuneProvinciaNomeAsc(pageable) : this.clientiRepository.orderBySedeLegaleComuneProvinciaNomeDesc(pageable);
+    }
+
+    public Page<Cliente> findByFatturatoAnnuale(double fatturatoAnnuale, int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.findByFatturatoAnnuale(fatturatoAnnuale, pageable);
+    }
+
+    public Page<Cliente> findByDataInserimento(LocalDate dataInserimento, int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.findByDataInserimento(dataInserimento, pageable);
+    }
+
+    public Page<Cliente> findByDataUltimoContatto(LocalDate dataUltimoContatto, int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.findByDataUltimoContatto(dataUltimoContatto, pageable);
+    }
+
+    public Page<Cliente> findByNomeLike(String nome, int page, int size, String sortBy) {
+        if (page > 100) page = 100;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.clientiRepository.findByNomeSocietaLike(nome, pageable);
+    }
 }
 
