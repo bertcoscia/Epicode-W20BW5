@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class ClientiController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy) {
-        return clientiService.findAllClienti(page, size, sortBy);
+        return this.clientiService.findAllClienti(page, size, sortBy);
     }
 
     // 2 --> GET CLIENTE
@@ -86,7 +87,7 @@ public class ClientiController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         boolean ascending = sortOrder.equalsIgnoreCase("asc");
-        return clientiService.orderByName(page, size, ascending);
+        return this.clientiService.orderByName(page, size, ascending);
     }
 
     @GetMapping("/order-fatturato")
@@ -95,7 +96,7 @@ public class ClientiController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         boolean ascending = sortOrder.equalsIgnoreCase("asc");
-        return clientiService.orderByFatturatoAnnuale(page, size, ascending);
+        return this.clientiService.orderByFatturatoAnnuale(page, size, ascending);
     }
 
     @GetMapping("/order-dataInserimento")
@@ -104,7 +105,7 @@ public class ClientiController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         boolean ascending = sortOrder.equalsIgnoreCase("asc");
-        return clientiService.orderByDataInserimento(page, size, ascending);
+        return this.clientiService.orderByDataInserimento(page, size, ascending);
     }
 
     @GetMapping("/order-dataUltimoContatto")
@@ -113,7 +114,7 @@ public class ClientiController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         boolean ascending = sortOrder.equalsIgnoreCase("asc");
-        return clientiService.orderByDataUltimoContatto(page, size, ascending);
+        return this.clientiService.orderByDataUltimoContatto(page, size, ascending);
     }
 
     @GetMapping("/order-sedeLegale")
@@ -122,8 +123,26 @@ public class ClientiController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "asc") String sortOrder) {
         boolean ascending = sortOrder.equalsIgnoreCase("asc");
-        return clientiService.orderBySedeLegaleComuneProvinciaNome(page, size, ascending);
+        return this.clientiService.orderBySedeLegaleComuneProvinciaNome(page, size, ascending);
     }
 
-    // TODO: findByFatturatoAnnuale; findByDataInserimento; findByDataUltimoContatto; findByNomeLike
+    @GetMapping("/filter-fatturato")
+    public Page<Cliente> findByFatturatoAnnuale(
+            @RequestParam double fatturato,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy) {
+        return this.clientiService.findByFatturatoAnnuale(fatturato, page, size, sortBy);
+    }
+
+    @GetMapping("/filter-dataInserimento")
+    public Page<Cliente> findByDataInserimento(
+            @RequestParam LocalDate data,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "nomeSocieta") String sortBy) {
+        return this.clientiService.findByDataInserimento(data, page, size, sortBy);
+    }
+
+    // TODO: findByDataUltimoContatto; findByNomeLike
 }
