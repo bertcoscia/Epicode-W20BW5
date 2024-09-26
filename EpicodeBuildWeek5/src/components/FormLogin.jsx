@@ -65,7 +65,7 @@ const AuthForm = () => {
     <div
       className="d-flex justify-content-center align-items-center vh-100"
       style={{
-        backgroundColor: "violet light",
+        backgroundColor: "#4B0082",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import FormLogin from "./components/FormLogin";
-import EmailForm from "./components/EmailForm";
+import FattureList from "./components/FattureList"; // Importa il componente per le fatture
+import AddFatture from "./components/AddFatture"; // Componente per aggiungere una fattura (da creare)
 
 const App = () => {
   return (
@@ -9,7 +10,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<FormLogin />} />
-        <Route path="/email" element={<EmailForm />} />
+        <Route path="/invoices" element={<FattureList />} />
+        <Route path="/invoices/add" element={<AddFatture />} />
       </Routes>
     </Router>
   );
