@@ -18,10 +18,10 @@ import java.util.UUID;
 @Service
 public class IndirizziService {
     @Autowired
-    IndirizziRepository repository;
+    private IndirizziRepository repository;
 
     @Autowired
-    ComuniService comuniService;
+    private ComuniService comuniService;
 
     public Indirizzo save(NewIndirizziDTO body) {
         if (this.repository.existsByViaAndCivicoAndComuneNome(body.via(), body.civico(), body.comune())) throw new BadRequestException("Esiste già un indirizzo registrato a " + body.via() + " " + body.civico() + " presso il comune di " + body.comune());
