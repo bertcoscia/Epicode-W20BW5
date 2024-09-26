@@ -27,9 +27,13 @@ public class FattureSpecs {
         };
     }
 
-    public static Specification<Fattura> hasAnno(String anno) {
+    public static Specification<Fattura> hasAnno(int anno) {
         return (root, query, criteriaBuilder) -> {
-            return criteriaBuilder.equal(criteriaBuilder.function("YEAR", Integer.class, root.get("data")), Integer.valueOf(anno));
+            return criteriaBuilder.equal(
+                    criteriaBuilder.function("EXTRACT", Double.class,
+                            criteriaBuilder.literal("YEAR"), root.get("data")),
+                    (double) anno
+            );
         };
     }
 

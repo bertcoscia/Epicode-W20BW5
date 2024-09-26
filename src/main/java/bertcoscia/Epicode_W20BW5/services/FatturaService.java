@@ -61,7 +61,7 @@ public class FatturaService {
             spec = spec.and(FattureSpecs.hasData(data));
         }
         if (params.containsKey("anno")) {
-            String anno = params.get("anno");
+            int anno = Integer.parseInt(params.get("anno"));
             spec = spec.and(FattureSpecs.hasAnno(anno));
         }
         if (params.containsKey("min") && params.containsKey("max")) {
