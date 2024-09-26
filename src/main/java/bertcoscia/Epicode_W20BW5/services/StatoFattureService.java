@@ -1,11 +1,14 @@
 package bertcoscia.Epicode_W20BW5.services;
 
 import bertcoscia.Epicode_W20BW5.entities.StatoFattura;
+import bertcoscia.Epicode_W20BW5.exceptions.BadRequestException;
 import bertcoscia.Epicode_W20BW5.exceptions.NotFoundException;
+import bertcoscia.Epicode_W20BW5.payloads.StatoFatturaDTO;
 import bertcoscia.Epicode_W20BW5.repositories.StatoFatturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -27,18 +30,14 @@ public class StatoFattureService {
 
     public StatoFattura findByNomeStatoIgnoreCase(String nome) {
         return this.repository.findByNomeStatoIgnoreCase(nome).orElseThrow(() -> new NotFoundException("Non è stato possibile trovare uno stato fattura chiamato " + nome));
+    }
+
     public StatoFattura findById(UUID statoFatturaId) {
         return this.statoFatturaRepository.findById(statoFatturaId).orElseThrow(() -> new NotFoundException(statoFatturaId));
     }
 
-    public StatoFattura findByNomeStato(String nomeStato) {
-        return statoFatturaRepository.findByNomeStato(nomeStato).orElseThrow(() -> new NotFoundException("Il nome dello Stato " + nomeStato + " non è stato trovato!"));
-    }
-
-    public Page<StatoFattura> findAll(int page, int size, String sortBy) {
-        if (page > 20) page = 20;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return this.statoFatturaRepository.findAll(pageable);
+    public List<StatoFattura> findAll(/*int page, int size, String sortBy*/) {
+        return this.statoFatturaRepository.findAll();
     }
 
     public void findByIdAndDelete(UUID statoFatturaId) {
