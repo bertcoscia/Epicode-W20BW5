@@ -5,10 +5,12 @@ import bertcoscia.Epicode_W20BW5.exceptions.BadRequestException;
 import bertcoscia.Epicode_W20BW5.payloads.UserDTO;
 import bertcoscia.Epicode_W20BW5.payloads.UserUpRuoloDTO;
 import bertcoscia.Epicode_W20BW5.services.UsersService;
+import bertcoscia.Epicode_W20BW5.tools.MailgunSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
@@ -25,6 +27,8 @@ import java.util.stream.Collectors;
 public class UsersController {
     @Autowired
     private UsersService usersService;
+    @Autowired
+    private MailgunSender mailgunSender;
 
     /*ME*/
     @GetMapping("/me")
@@ -99,6 +103,22 @@ public class UsersController {
             throw new BadRequestException("Ci sono stati errori nel payload. " + messages);
         } else {
             return this.usersService.updateRuolo(userId, nomeRuolo);
+        }
+    }
+
+    @PostMapping("/send-email/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> sendEmailToUser(
+            @PathVariable UUID userId,
+            @RequestParam String subject,
+            @RequestParam String body) {
+
+        String response = usersService.sendEmailToUser(userId, subject, body);
+        
+        if (response.startsWith("Email inviata a")) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.badRequest().body(response);
         }
     }
 }

@@ -8,6 +8,7 @@ import bertcoscia.Epicode_W20BW5.payloads.UserDTO;
 import bertcoscia.Epicode_W20BW5.payloads.UserUpRuoloDTO;
 import bertcoscia.Epicode_W20BW5.repositories.RuoloRepository;
 import bertcoscia.Epicode_W20BW5.repositories.UsersRepository;
+import bertcoscia.Epicode_W20BW5.tools.MailgunSender;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class UsersService {
     private Cloudinary cloudinary;
     @Autowired
     private RuoloRepository ruoloRepository;
+    @Autowired
+    private MailgunSender mailgunSender;
 
     public User saveUser(UserDTO body) {
         if (body == null) {
@@ -100,4 +103,15 @@ public class UsersService {
         user.getRuoli().add(ruolo);
         return usersRepository.save(user);
     }
+
+    public String sendEmailToUser(UUID userId, String subject, String body) {
+        User user = findById(userId);
+        if (user == null) {
+            throw new BadRequestException("Utente con id" + userId + " non trovato");
+        } else {
+            mailgunSender.sendEmail(user, subject, body);
+            return "Email inviata a " + user.getEmail();
+        }
+    }
 }
+
