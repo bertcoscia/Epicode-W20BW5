@@ -7,6 +7,7 @@ import bertcoscia.Epicode_W20BW5.payloads.NewEntityRespDTO;
 import bertcoscia.Epicode_W20BW5.services.ClientiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -30,8 +32,11 @@ public class ClientiController {
     public Page<Cliente> findAllCliente(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy) {
-        return this.clientiService.findAllClienti(page, size, sortBy);
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestParam Map<String,String> params) {
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        return this.clientiService.findAllClienti(page, size, sortBy, direction, params);
     }
 
     // 2 --> GET CLIENTE
@@ -79,51 +84,6 @@ public class ClientiController {
     @PostMapping("/{clienteId}/logoAziendale")
     public void uploadLogoAziendale(@RequestParam("logoAziendale") MultipartFile image) throws IOException {
         this.clientiService.uploadImg(image);
-    }
-
-    @GetMapping("/order-name")
-    public Page<Cliente> orderByName(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "asc") String sortOrder) {
-        boolean ascending = sortOrder.equalsIgnoreCase("asc");
-        return this.clientiService.orderByName(page, size, ascending);
-    }
-
-    @GetMapping("/order-fatturato")
-    public Page<Cliente> orderByFatturato(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "asc") String sortOrder) {
-        boolean ascending = sortOrder.equalsIgnoreCase("asc");
-        return this.clientiService.orderByFatturatoAnnuale(page, size, ascending);
-    }
-
-    @GetMapping("/order-dataInserimento")
-    public Page<Cliente> orderByDataInserimento(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "asc") String sortOrder) {
-        boolean ascending = sortOrder.equalsIgnoreCase("asc");
-        return this.clientiService.orderByDataInserimento(page, size, ascending);
-    }
-
-    @GetMapping("/order-dataUltimoContatto")
-    public Page<Cliente> orderByDataUltimoContatto(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "asc") String sortOrder) {
-        boolean ascending = sortOrder.equalsIgnoreCase("asc");
-        return this.clientiService.orderByDataUltimoContatto(page, size, ascending);
-    }
-
-    @GetMapping("/order-sedeLegale")
-    public Page<Cliente> orderBySedeLegaleComuneProvinciaNome(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "asc") String sortOrder) {
-        boolean ascending = sortOrder.equalsIgnoreCase("asc");
-        return this.clientiService.orderBySedeLegaleComuneProvinciaNome(page, size, ascending);
     }
 
     @GetMapping("/filter-fatturato")
