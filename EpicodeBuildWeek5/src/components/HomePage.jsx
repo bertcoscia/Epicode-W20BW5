@@ -77,9 +77,9 @@ const Homepage = () => {
           <p className="mb-4">
             Vuoi ricevere maggiori informazioni? Siamo qui per aiutarti.
           </p>
-          <a href="#preventivo" className="btn bg-warning btn-lg">
+          <Link to="/email" className="btn bg-warning btn-lg">
             Richiedi un Preventivo
-          </a>
+          </Link>
         </div>
       </section>
     </div>
