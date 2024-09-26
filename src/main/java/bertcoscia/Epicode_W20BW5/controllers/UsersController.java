@@ -106,15 +106,15 @@ public class UsersController {
         }
     }
 
-    @PostMapping("/send-email/{userId}")
+    @PostMapping("/send-email/{clientId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> sendEmailToUser(
-            @PathVariable UUID userId,
+            @PathVariable UUID clientId,
             @RequestParam String subject,
             @RequestParam String body) {
 
-        String response = usersService.sendEmailToUser(userId, subject, body);
-        
+        String response = usersService.sendEmailToClient(clientId, subject, body);
+
         if (response.startsWith("Email inviata a")) {
             return ResponseEntity.ok(response);
         } else {

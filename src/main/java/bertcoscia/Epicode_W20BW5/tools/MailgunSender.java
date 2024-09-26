@@ -1,6 +1,6 @@
 package bertcoscia.Epicode_W20BW5.tools;
 
-import bertcoscia.Epicode_W20BW5.entities.User;
+import bertcoscia.Epicode_W20BW5.entities.Cliente;
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.JsonNode;
 import kong.unirest.core.Unirest;
@@ -20,7 +20,7 @@ public class MailgunSender {
 
     }
 
-    public void sendEmail(User recipient, String subject, String body) {
+    public void sendEmail(Cliente recipient, String subject, String body) {
         HttpResponse<JsonNode> response = Unirest.post("https://api.mailgun.net/v3/" + this.domainName + "/messages")
                 .basicAuth("api", this.apiKey)
                 .queryString("from", "calopippo429@gmail.com")
