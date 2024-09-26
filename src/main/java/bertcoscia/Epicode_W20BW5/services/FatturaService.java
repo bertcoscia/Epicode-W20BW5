@@ -65,8 +65,8 @@ public class FatturaService {
             spec = spec.and(FattureSpecs.hasAnno(anno));
         }
         if (params.containsKey("min") && params.containsKey("max")) {
-            double min = Double.valueOf(params.get("min"));
-            double max = Double.valueOf(params.get("max"));
+            double min = Double.parseDouble(params.get("min"));
+            double max = Double.parseDouble(params.get("max"));
             spec = spec.and(FattureSpecs.hasImportoBetween(min, max));
         }
         return this.fatturaRepository.findAll(spec, pageable);
