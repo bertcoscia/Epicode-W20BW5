@@ -23,13 +23,10 @@ public class Config {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.formLogin(http -> http.disable()); // Non voglio il form di login (avremo React per quello)
-        httpSecurity.csrf(http -> http.disable()); // Non voglio la protezione da attacchi CSRF (per le nostre app non è necessaria, anzi
-        httpSecurity.sessionManagement(http -> http.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Non voglio le sessioni (perché con
-        // JWT non si utilizzano le sessioni)
-        httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/**").permitAll()); // Questo evita di ricevere 401 su OGNI richiesta
-        // - customizzare il comportamento di alcuni filtri di sicurezza
-        // - aggiungere ulteriori filtri personalizzati
+        httpSecurity.formLogin(http -> http.disable());
+        httpSecurity.csrf(http -> http.disable());
+        httpSecurity.sessionManagement(http -> http.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/**").permitAll());
         httpSecurity.cors(Customizer.withDefaults());
         return httpSecurity.build();
     }
@@ -37,11 +34,6 @@ public class Config {
     @Bean
     PasswordEncoder getBCrypt() {
         return new BCryptPasswordEncoder(11);
-        // 11 è il cosiddetto numero di rounds, ovvero quante volte viene eseguito l'algoritmo, ciò è utile per regolarne la velocità di esecuzione.
-        // Più è lento, più saranno sicure le nostre password e ovviamente viceversa. Bisogna però sempre tenere in considerazione anche la UX,
-        // quindi più è lento, peggiò sarà la UX. In sostanza bisogna trovare il giusto bilanciamento tra sicurezza e UX
-        // 11 ad esempio significa che l'algoritmo verrà eseguito 2^11 volte cioè 2048 volte. Su un computer di medie prestazioni equivale a circa
-        // 100/200 ms
     }
 
     @Bean
@@ -54,5 +46,5 @@ public class Config {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-    } // NON DIMENTICHIAMOCI CHE VA AGGIUNTA UN'IMPOSTAZIONE PER I CORS ANCHE NELLA FILTER CHAIN QUA SOPRA
+    }
 }
