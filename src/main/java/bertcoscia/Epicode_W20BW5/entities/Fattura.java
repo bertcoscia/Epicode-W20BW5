@@ -23,7 +23,7 @@ public class Fattura {
     private double importo;
 
     @Column(name = "numero_fattura", unique = true)
-    private Long numeroFattura;
+    private String numeroFattura;
 
     @ManyToOne
     @JoinColumn(name = "id_stato")
@@ -33,10 +33,11 @@ public class Fattura {
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
-    public Fattura(Cliente cliente, LocalDate data, double importo, StatoFattura statoFattura) {
+    public Fattura(Cliente cliente, LocalDate data, double importo, StatoFattura statoFattura, String numeroFattura) {
         this.cliente = cliente;
         this.data = data;
         this.importo = importo;
         this.statoFattura = statoFattura;
+        this.numeroFattura = numeroFattura;
     }
 }

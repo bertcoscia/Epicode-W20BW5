@@ -34,7 +34,6 @@ public class AuthController {
         } else {
             return new NewEntityRespDTO(this.usersService.saveUser(body).getId());
         }
-
     }
 
     @PostMapping("/login")

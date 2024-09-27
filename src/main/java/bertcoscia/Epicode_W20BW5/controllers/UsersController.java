@@ -55,7 +55,7 @@ public class UsersController {
 
     /*ADMIN*/
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public Page<User> findAll(@RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "10") int size,
                               @RequestParam(defaultValue = "id") String sortBy) {
@@ -63,7 +63,7 @@ public class UsersController {
     }
 
     @GetMapping("/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public User findById(@PathVariable UUID userId) {
         return this.usersService.findById(userId);
     }
@@ -112,9 +112,7 @@ public class UsersController {
     public ResponseEntity<String> sendEmailToUser(
             @PathVariable UUID clienteId,
             @RequestBody EmailRequestDTO emailRequestDTO) {
-
         String response = usersService.sendEmailToClient(clienteId, emailRequestDTO.subject(), emailRequestDTO.body());
-
         if (response.startsWith("Email inviata a")) {
             return ResponseEntity.ok(response);
         } else {

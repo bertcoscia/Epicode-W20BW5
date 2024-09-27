@@ -8,11 +8,13 @@ import bertcoscia.Epicode_W20BW5.services.FatturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,13 +26,19 @@ public class FatturaController {
     private FatturaService fatturaService;
 
     @GetMapping
-    public Page<Fattura> findAll(@RequestParam(defaultValue = "0") int page,
-                                 @RequestParam(defaultValue = "10") int size,
-                                 @RequestParam(defaultValue = "id") String sortBy) {
-        return fatturaService.findAll(page, size, sortBy);
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public Page<Fattura> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestParam Map<String, String> params) {
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        return this.fatturaService.getAllFatture(page, size, sortBy, direction, params);
     }
 
     @GetMapping("/{fatturaId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public Fattura findById(@PathVariable UUID fatturaId) {
         return this.fatturaService.findById(fatturaId);
     }
@@ -46,7 +54,6 @@ public class FatturaController {
         } else {
             return new NewEntityRespDTO(this.fatturaService.saveFattura(body).getId());
         }
-
     }
 
     @DeleteMapping("/{fatturaId}")

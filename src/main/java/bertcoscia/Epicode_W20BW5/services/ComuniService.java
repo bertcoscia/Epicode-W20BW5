@@ -23,10 +23,10 @@ import java.util.UUID;
 @Service
 public class ComuniService {
     @Autowired
-    ComuniRepository repository;
+    private ComuniRepository repository;
 
     @Autowired
-    ProvinceService provinceService;
+    private ProvinceService provinceService;
 
     public Comune findByNome(String nome) {
         return this.repository.findByNomeIgnoreCase(nome).orElseThrow(() -> new NotFoundException("Non è stato possibile trovare il comune " + nome));

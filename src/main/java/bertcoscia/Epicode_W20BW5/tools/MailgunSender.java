@@ -11,19 +11,21 @@ import org.springframework.stereotype.Component;
 public class MailgunSender {
     private String apiKey;
     private String domainName;
-
+    private String fromEmail;
 
     public MailgunSender(@Value("${mailgun.key}") String apiKey,
-                         @Value("${mailgun.domain}") String domainName) {
+                         @Value("${mailgun.domain}") String domainName,
+                         @Value("${mailgun.email}") String fromEmail) {
+
         this.apiKey = apiKey;
         this.domainName = domainName;
-
+        this.fromEmail = fromEmail;
     }
 
     public void sendEmail(Cliente recipient, String subject, String body) {
         HttpResponse<JsonNode> response = Unirest.post("https://api.mailgun.net/v3/" + this.domainName + "/messages")
                 .basicAuth("api", this.apiKey)
-                .queryString("from", "calopippo429@gmail.com")
+                .queryString("from", this.fromEmail)
                 .queryString("to", recipient.getEmail())
                 .queryString("subject", subject)
                 .queryString("text", body)

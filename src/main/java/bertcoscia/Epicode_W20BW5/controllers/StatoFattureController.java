@@ -6,13 +6,13 @@ import bertcoscia.Epicode_W20BW5.payloads.StatoFatturaDTO;
 import bertcoscia.Epicode_W20BW5.services.StatoFattureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -23,15 +23,18 @@ public class StatoFattureController {
     private StatoFattureService statoFattureService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public Page<StatoFattura> findAll(@RequestParam(defaultValue = "0") int page,
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    /*public Page<StatoFattura> findAll(@RequestParam(defaultValue = "0") int page,
                                       @RequestParam(defaultValue = "10") int size,
                                       @RequestParam(defaultValue = "id") String sortBy) {
         return this.statoFattureService.findAll(page, size, sortBy);
+    }*/
+    public List<StatoFattura> findAll() {
+        return this.statoFattureService.findAll();
     }
 
     @GetMapping("/{statoFatturaId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public StatoFattura findById(@PathVariable UUID statoFatturaId) {
         return this.statoFattureService.findById(statoFatturaId);
     }

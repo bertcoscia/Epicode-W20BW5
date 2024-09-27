@@ -6,6 +6,7 @@ import bertcoscia.Epicode_W20BW5.enums.TipoCliente;
 import bertcoscia.Epicode_W20BW5.exceptions.NotFoundException;
 import bertcoscia.Epicode_W20BW5.payloads.NewClienteDTO;
 import bertcoscia.Epicode_W20BW5.repositories.ClientiRepository;
+import bertcoscia.Epicode_W20BW5.specs.ClientiSpecs;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.apache.coyote.BadRequestException;
@@ -14,11 +15,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -32,10 +35,32 @@ public class ClientiService {
     private IndirizziService indirizziService;
 
     //Find All
-    public Page<Cliente> findAllClienti(int page, int size, String sortBy) {
+    public Page<Cliente> findAllClienti(int page, int size, String sortBy, Sort.Direction direction, Map<String, String> params) {
         if (page > 100) page = 100;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return this.clientiRepository.findAll(pageable);
+        Pageable pageable;
+        if ("provincia".equalsIgnoreCase(sortBy)) {
+            pageable = PageRequest.of(page, size, Sort.by(direction, "sedeLegale.comune.provincia.nome"));
+        } else {
+            pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+        }
+        Specification<Cliente> spec = Specification.where(null);
+        if (params.containsKey("fatturato")) {
+            Long fatturato = Long.valueOf(params.get("fatturato"));
+            spec = spec.and(ClientiSpecs.hasFatturato(fatturato));
+        }
+        if (params.containsKey("dataInserimento")) {
+            LocalDate dataInserimento = LocalDate.parse(params.get("dataInserimento"));
+            spec = spec.and(ClientiSpecs.hasDataInserimento(dataInserimento));
+        }
+        if (params.containsKey("dataUltimoContatto")) {
+            LocalDate dataUltimoContatto = LocalDate.parse(params.get("dataUltimoContatto"));
+            spec = spec.and(ClientiSpecs.hasDataUltimoContatto(dataUltimoContatto));
+        }
+        if (params.containsKey("nome")) {
+            String nome = params.get("nome");
+            spec = spec.and(ClientiSpecs.hasNomeLike(nome));
+        }
+        return clientiRepository.findAll(spec, pageable);
     }
 
     // Find by ID

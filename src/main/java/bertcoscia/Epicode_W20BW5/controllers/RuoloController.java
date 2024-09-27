@@ -23,7 +23,7 @@ public class RuoloController {
     private RuoloService ruoloService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public List<Ruolo> getAllRuoli() {
         return ruoloService.findAll();
     }
@@ -42,7 +42,7 @@ public class RuoloController {
     }
 
     @GetMapping("/{ruoloId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public Ruolo getRuoloById(@PathVariable UUID ruoloId) {
         return ruoloService.findById(ruoloId);
     }
