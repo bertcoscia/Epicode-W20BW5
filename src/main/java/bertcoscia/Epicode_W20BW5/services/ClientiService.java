@@ -76,9 +76,12 @@ public class ClientiService {
 
     //Salvataggio
     public Cliente saveCliente(NewClienteDTO body) throws BadRequestException {
-        if (this.clientiRepository.existsByEmail(body.email())) throw new BadRequestException("Esiste già un cliente con email " + body.email());
-        if (this.clientiRepository.existsByPartitaIva(body.partitaIva())) throw new BadRequestException("Esiste già un cliente con partita IVA " + body.partitaIva());
-        if (this.clientiRepository.existsByPec(body.pec())) throw new BadRequestException("Esiste già un cliente con PEC " + body.pec());
+        if (this.clientiRepository.existsByEmail(body.email()))
+            throw new BadRequestException("Esiste già un cliente con email " + body.email());
+        if (this.clientiRepository.existsByPartitaIva(body.partitaIva()))
+            throw new BadRequestException("Esiste già un cliente con partita IVA " + body.partitaIva());
+        if (this.clientiRepository.existsByPec(body.pec()))
+            throw new BadRequestException("Esiste già un cliente con PEC " + body.pec());
         LocalDate dataInserimento = LocalDate.parse(body.dataInserimento());
         LocalDate dataUltimoContatto = LocalDate.parse(body.dataUltimoContatto());
         TipoCliente tipoCliente;
@@ -103,9 +106,12 @@ public class ClientiService {
     //Modifica
     public Cliente findByClienteIdAndUpdate(UUID clienteId, Cliente body) throws BadRequestException {
         Cliente clienteFound = this.findClienteById(clienteId);
-        if (!clienteFound.getId().equals(body.getId()) && this.clientiRepository.existsByEmail(body.getEmail())) throw new BadRequestException("Esiste già un cliente con email " + body.getEmail());
-        if (!clienteFound.getId().equals(body.getId()) && this.clientiRepository.existsByPartitaIva(body.getPartitaIva())) throw new BadRequestException("Esiste già un cliente con partita IVA " + body.getPartitaIva());
-        if (!clienteFound.getId().equals(body.getId()) && this.clientiRepository.existsByPec(body.getPec())) throw new BadRequestException("Esiste già un cliente con PEC " + body.getPec());
+        if (!clienteFound.getId().equals(body.getId()) && this.clientiRepository.existsByEmail(body.getEmail()))
+            throw new BadRequestException("Esiste già un cliente con email " + body.getEmail());
+        if (!clienteFound.getId().equals(body.getId()) && this.clientiRepository.existsByPartitaIva(body.getPartitaIva()))
+            throw new BadRequestException("Esiste già un cliente con partita IVA " + body.getPartitaIva());
+        if (!clienteFound.getId().equals(body.getId()) && this.clientiRepository.existsByPec(body.getPec()))
+            throw new BadRequestException("Esiste già un cliente con PEC " + body.getPec());
         clienteFound.setCognome(body.getCognome());
         clienteFound.setDataInserimento(body.getDataInserimento());
         clienteFound.setDataUltimoContatto(body.getDataUltimoContatto());
@@ -134,9 +140,12 @@ public class ClientiService {
     }
 
     // IMG CLOUDINARY
-    public void uploadImg(MultipartFile file) throws IOException {
+    public void uploadImg(MultipartFile file, UUID clienteId) throws IOException {
         String url = (String) cloudinaryUploader.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
         System.out.println("URL: " + url);
+        Cliente cliente = clientiRepository.findById(clienteId).orElseThrow(() -> new RuntimeException("Cliente non trovato"));
+        cliente.setLogoAziendale(url);
+        clientiRepository.save(cliente);
     }
 
 }

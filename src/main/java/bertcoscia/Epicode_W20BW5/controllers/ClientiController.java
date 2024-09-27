@@ -78,7 +78,7 @@ public class ClientiController {
     // 7 --> UPLOAD
     @PostMapping("/{clienteId}/logoAziendale")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void uploadLogoAziendale(@RequestParam("logoAziendale") MultipartFile image) throws IOException {
-        this.clientiService.uploadImg(image);
+    public void uploadLogoAziendale(@RequestParam("logoAziendale") MultipartFile image, @PathVariable UUID clienteId) throws IOException {
+        this.clientiService.uploadImg(image, clienteId);
     }
 }
