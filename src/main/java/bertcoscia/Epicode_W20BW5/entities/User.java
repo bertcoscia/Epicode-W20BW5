@@ -1,6 +1,7 @@
 package bertcoscia.Epicode_W20BW5.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @ToString
 @NoArgsConstructor
 @Table(name = "users")
+@JsonIgnoreProperties({"enabled", "accountNonLocked", "credentialsNonExpired", "accountNonExpired"})
 public class User implements UserDetails {
     @Setter(AccessLevel.NONE)
     @Id
