@@ -98,9 +98,11 @@ public class ClientiService {
         }
         Indirizzo sedeLegaleFound = this.indirizziService.findById(UUID.fromString(body.sedeLegale()));
         Indirizzo sedeOperativaFound = this.indirizziService.findById(UUID.fromString(body.sedeOperativa()));
-        return this.clientiRepository.save(new Cliente(body.nomeSocieta(), body.partitaIva(), body.email(), dataInserimento, dataUltimoContatto,
-                body.fatturatoAnnuale(), body.pec(), body.telefono(), body.emailContatto(), body.nomeContatto(), body.cognome(), body.telefonoContatto(),
-                body.logoAziendale(), tipoCliente, sedeLegaleFound, sedeOperativaFound));
+        Cliente newCliente = new Cliente(body.nomeSocieta(), body.partitaIva(), body.email(), dataInserimento, dataUltimoContatto, body.fatturatoAnnuale(), body.pec(), body.telefono(), body.emailContatto(),
+                body.nomeContatto(), body.cognome(), body.telefonoContatto(), tipoCliente, sedeLegaleFound, sedeOperativaFound);
+        String nomeSocietaFormattato = newCliente.getNomeSocieta().replace(" ", "+");
+        newCliente.setLogoAziendale("https://ui-avatars.com/api/?name=" + nomeSocietaFormattato);
+        return this.clientiRepository.save(newCliente);
     }
 
     //Modifica

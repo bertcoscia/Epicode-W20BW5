@@ -45,7 +45,7 @@ public class Cliente {
 
     //Costruttore
 
-    public Cliente(String nomeSocieta, String partitaIva, String email, LocalDate dataInserimento, LocalDate dataUltimoContatto, double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognome, String telefonoContatto, String logoAziendale, TipoCliente tipoCliente, Indirizzo sedeLegale, Indirizzo sedeOperativa) {
+    public Cliente(String nomeSocieta, String partitaIva, String email, LocalDate dataInserimento, LocalDate dataUltimoContatto, double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognome, String telefonoContatto, TipoCliente tipoCliente, Indirizzo sedeLegale, Indirizzo sedeOperativa) {
         this.nomeSocieta = nomeSocieta;
         this.partitaIva = partitaIva;
         this.email = email;
@@ -58,7 +58,6 @@ public class Cliente {
         this.nomeContatto = nomeContatto;
         this.cognome = cognome;
         this.telefonoContatto = telefonoContatto;
-        this.logoAziendale = logoAziendale;
         this.tipoCliente = tipoCliente;
         this.sedeLegale = sedeLegale;
         this.sedeOperativa = sedeOperativa;

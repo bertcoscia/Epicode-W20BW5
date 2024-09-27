@@ -50,8 +50,6 @@ public record NewClienteDTO(
         @Size(min = 10, max = 15, message = "Il numero di telefono del contatto deve essere compreso tra 10 e 15 cifre")
         String telefonoContatto,
 
-        String logoAziendale,
-
         @NotEmpty(message = "Tipologia cliente obbligatoria")
         String tipoCliente,
 
