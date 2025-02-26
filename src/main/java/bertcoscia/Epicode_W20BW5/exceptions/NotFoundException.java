@@ -1,4 +1,4 @@
-package bertcoscia.Epicode_W20BW5.exceptions;
+exceptions;
 
 import java.util.UUID;
 
